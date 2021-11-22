@@ -49,6 +49,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Running the project locally
 
+First, fork and then clone the project locally.
+
 In the project root, you can run `yarn install` to install the frontend and smart contract dependencies.
 
 Then run `yarn start`, which concurrently runs the app in the development mode, starts a REST API at `http://localhost:3004`, and populates the local blockchain with test data.\
@@ -58,7 +60,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### Repo Structure
+### Directory Structure
 
 - `/src`
   - `/api`
