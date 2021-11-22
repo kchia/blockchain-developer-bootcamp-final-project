@@ -7,7 +7,7 @@ on: # on command is used to specify an event that will trigger the workflow, thi
 
 env: # specify the environment variables for the deploy workflow
   NODE_VERSION: "14.x"
-  HEROKU_APP_NAME: "consensys-final-project" # this has to match the unique Heroku name given to the app
+  HEROKU_APP_NAME: "pacific-sea-29544" # this has to match the unique Heroku name given to the app
 
 jobs:
   build-and-deploy: # specify the job we want to run, which in this case is a build job.
