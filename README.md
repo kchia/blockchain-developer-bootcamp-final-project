@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Live URL
 
-[Live URL]()
+[Consensys Final Project](consensys-final-project.herokuapp.com)
 
 ## Problem
 
