@@ -62,6 +62,9 @@ You will also see any lint errors in the console.
 
 ### Directory Structure
 
+- `/contracts`: contains the smart contract code written in Solidity
+- `/migrations`: contains the Truffle migration files
+- `/test`: contains the smart contract test code
 - `/src`
   - `/api`
     - `client.js`: a client wrapper around the Fetch API that supports `GET`, `POST`, `PUT`, and `DELETE` requests
@@ -86,9 +89,16 @@ You will also see any lint errors in the console.
     - `global.css`: contains global css styles used throughout the application
   - `index.js`: entry point to the React Application
   - `setupTests.js`: import any additional libraries used to extend test functionality (e.g, `jest-dom`)
-- `.env`: contains environment variables (typically added to `.gitignore`)
+- `.gitignore`: specifies the files to ignore when committing the project to Github
+- `avoiding_common_attacks.md`: describes common attack vectors and their SWC numbers that the smart contract protects against
 - `db.json`: JSON database for your fake REST API
+- `deployed_address.txt`: contains information on the testnet address and the network the smart contract was deployed to
+- `design_pattern_decisions.md`: describes the design pattern decisions used to build the smart contract
+- `package.json`: manifest file for the project
+- `Procfile`: a file containing commands to be run by the app's dynos after it is deployed to Heroku  
 - `routes.json`: routing logic for your fake REST API
+- `server.js`: the server setup script that the app's dynos will run after the app is deployed to Heroku
+- `truffle-config.js`: configuration file for local smart contract development 
 
 The following principles were applied in the design of the folder structure:
 
