@@ -1,0 +1,40 @@
+name: Deploy # naming this workflow deploy
+
+on: # on command is used to specify an event that will trigger the workflow, this event can be push, pull_request, etc.
+  push:
+    branches:
+      - main
+
+env: # specify the environment variables for the deploy workflow
+  NODE_VERSION: "14.x"
+  HEROKU_APP_NAME: "consensys-final-project" # this has to match the unique Heroku name given to the app
+
+jobs:
+  build-and-deploy: # specify the job we want to run, which in this case is a build job.
+    runs-on: ubuntu-latest # specifying the OS we want your workflow to run on
+
+    steps: # Steps indicate the various steps we want to run on a given job
+      - uses: actions/checkout@v1 # use a predefined Github action for cloning the repo and checking into the  project directory.
+        with:
+          branch: main
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2 # use a predefined Github action to set up Node.js
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: yarn install
+        run: |
+          yarn install
+      - name: yarn build
+        run: |
+          CI=false yarn build
+      - name: yarn test
+        run: |
+          yarn test
+      - name: Add remote origin
+        run: |
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ env.HEROKU_APP_NAME }}.git
+      - name: Deploy to Heroku
+        run: |
+          git push heroku HEAD:main -f

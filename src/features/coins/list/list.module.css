@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableHeader {
+  background-color: #333;
+  color: #fff;
+}
+
+.tableHeaderCell {
+  text-align: center;
+  padding: 10px;
+}
+
+.tableRow:nth-child(even) {
+  background-color: var(--black-secondary);
+}
+
+.tableCell {
+  padding: 20px;
+}
+
+.image {
+  width: 40px;
+  height: 40px;
+}
+
+.negative {
+  color: #ff0000;
+}
+
+.positive {
+  color: #00a300;
+}

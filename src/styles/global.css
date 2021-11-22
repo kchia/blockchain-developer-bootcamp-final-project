@@ -1,0 +1,17 @@
+:root {
+  --white-primary: #fff;
+  --black-primary: #000;
+  --black-secondary: #242526;
+
+  --background: var(--black-primary);
+  --text-color: var(--white-primary);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-color);
+}
+
+a:hover {
+  color: yellow;
+}

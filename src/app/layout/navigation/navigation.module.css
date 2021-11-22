@@ -1,0 +1,13 @@
+.navBar {
+  display: flex;
+}
+
+.navLinkContainer {
+  list-style-type: none;
+  padding: 20px;
+}
+
+.navLink {
+  color: var(--text-color);
+  text-decoration: none;
+}

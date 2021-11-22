@@ -1,0 +1,11 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+  background-color: var(--black-secondary);
+}
+
+.mainContainer {
+  padding: 10px;
+}
