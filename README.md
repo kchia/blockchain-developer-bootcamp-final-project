@@ -35,7 +35,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## User Stories
 
-1. As a user, I want to ..., so that I can ...
+1. As a user, I want to login/connect with my MetaMask wallet, so that I can access the app.
 2. As a user, I want to ..., so that I can ...
 3. As a user, I want to ..., so that I can ..,
 
@@ -60,8 +60,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+Merging code into `main` automatically kicks off the deployment to Heroku.
+
 ### Directory Structure
 
+- `/.github/workflows`: contains the configuration files for building and deploying the app automatically
 - `/contracts`: contains the smart contract code written in Solidity
 - `/migrations`: contains the Truffle migration files
 - `/test`: contains the smart contract test code
