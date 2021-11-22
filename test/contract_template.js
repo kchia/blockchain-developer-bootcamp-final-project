@@ -11,3 +11,5 @@ contract("ContractTemplate", function (/* accounts */) {
     return assert.isTrue(true);
   });
 });
+
+// Have at least five smart contract unit tests that pass?

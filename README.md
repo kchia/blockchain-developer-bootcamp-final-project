@@ -4,9 +4,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Live URL
+## Deployed Site URL
 
-[Consensys Final Project](pacific-sea-29544.herokuapp.com)
+[Heroku: Consensys Final Project](pacific-sea-29544.herokuapp.com)
+
+## Screencast URL
+
+[YouTube: Consensys Final Project]()
+
+## Public Ethereum Address
 
 ## Problem
 
@@ -20,14 +26,30 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 [Describe how Solution works]
 
-## How to Use [Solution]
+## How to Use [Solution]/Workflow
 
 1. asdf
 2. asdf
 3. asdf
 4. asdf
 
-## Repo Structure
+## User Stories
+
+1. As a user, I want to ..., so that I can ...
+2. As a user, I want to ..., so that I can ...
+3. As a user, I want to ..., so that I can ..,
+
+## How to run this project locally
+
+### Prerequisites
+
+### Contracts
+
+### Frontend
+
+### Local Database
+
+### Repo Structure
 
 - `/src`
   - `/api`
@@ -67,19 +89,13 @@ The following principles were applied in the design of the folder structure:
 
 - Core UI components such as Button, Form, List, etc. are kept in a separate directory (i.e., `src/common/core`). As the UI library continues to grow, the core UI library could be packaged for use in another project or published as part of Storybook. Some developers on the team can even focus on this directory only.
 
-## User Stories
-
-1. As a user, I want to ..., so that I can ...
-2. As a user, I want to ..., so that I can ...
-3. As a user, I want to ..., so that I can ...
-
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `yarn start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode, and a fake REST API at `http://localhost:3004`\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
