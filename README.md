@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Deployed Site URL
 
-[Heroku: Consensys Final Project](pacific-sea-29544.herokuapp.com)
+[Heroku: Consensys Final Project](https://www.pacific-sea-29544.herokuapp.com)
 
 ## Screencast URL
 
