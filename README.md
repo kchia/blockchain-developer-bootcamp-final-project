@@ -39,15 +39,24 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 2. As a user, I want to ..., so that I can ...
 3. As a user, I want to ..., so that I can ..,
 
-## How to run this project locally
-
+## Installation
 ### Prerequisites
 
-### Contracts
+- Node.js v.14+
+- Truffle
+- Ganache
+- Yarn
 
-### Frontend
+### Running the project locally
 
-### Local Database
+In the project root, you can run `yarn install` to install the frontend and smart contract dependencies.
+
+Then run `yarn start`, which concurrently runs the app in the development mode, starts a REST API at `http://localhost:3004`, and populates the local blockchain with test data.\
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
 ### Repo Structure
 
@@ -89,17 +98,7 @@ The following principles were applied in the design of the folder structure:
 
 - Core UI components such as Button, Form, List, etc. are kept in a separate directory (i.e., `src/common/core`). As the UI library continues to grow, the core UI library could be packaged for use in another project or published as part of Storybook. Some developers on the team can even focus on this directory only.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode, and a fake REST API at `http://localhost:3004`\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Other Available Scripts
 
 ### `yarn test`
 
