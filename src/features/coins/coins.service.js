@@ -1,7 +1,11 @@
 import { client } from "../../api/client";
 import { formatNumber } from "../../common/utils";
 
-const API_URL = `/api/coins`;
+const { NODE_ENV, REACT_APP_API_BASE_URL } = process.env;
+
+const API_URL = `${
+  NODE_ENV === "development" ? REACT_APP_API_BASE_URL : ""
+}/api/coins`;
 
 async function list(signal) {
   try {

@@ -1,6 +1,10 @@
 import { client } from "../../api/client";
 
-const API_URL = `/api/favorites`;
+const { NODE_ENV, REACT_APP_API_BASE_URL } = process.env;
+
+const API_URL = `${
+  NODE_ENV === "development" ? REACT_APP_API_BASE_URL : ""
+}/api/favorites`;
 async function list(signal) {
   try {
     const favorites = await client.get(API_URL, { signal });
