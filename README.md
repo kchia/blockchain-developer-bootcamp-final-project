@@ -62,6 +62,16 @@ You will also see any lint errors in the console.
 
 Merging code into `main` automatically kicks off the deployment to Heroku.
 
+### Running a local Ganache blockchain
+
+In your terminal, run `ganache-cli -p 7545` to start an Ethereum blockchain at port `7545`.
+
+Then, run `truffle develop`.
+
+`migrate`
+
+`test`
+
 ### Directory Structure
 
 - `/.github/workflows`: contains the configuration files for building and deploying the app automatically
