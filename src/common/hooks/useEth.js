@@ -1,22 +1,30 @@
 import { useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { formatEther } from "@ethersproject/units";
-import { useAppContext } from "../../app/AppContext";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  selectEthBalance,
+  setEthBalance,
+} from "../../features/auth/auth.slice";
 
 export default function useEth() {
   const { active, library, account } = useWeb3React();
-  const { ethBalance, setEthBalance } = useAppContext();
+  const dispatch = useDispatch();
+  const ethBalance = useSelector(selectEthBalance);
 
   useEffect(() => {
-    (async () =>
-      setEthBalance(
-        library && active && account
-          ? parseFloat(
-              formatEther(await library.getBalance(account))
-            ).toPrecision(4)
-          : "--"
-      ))();
-  }, [account, active, library, setEthBalance]);
+    (async () => {
+      const balance = await library.getBalance(account);
+      dispatch(
+        setEthBalance(
+          library && active && account
+            ? parseFloat(formatEther(balance)).toPrecision(4)
+            : "--"
+        )
+      );
+    })();
+  }, []);
 
   return { ethBalance };
 }

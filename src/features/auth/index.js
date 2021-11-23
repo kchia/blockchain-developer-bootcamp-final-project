@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+
 import { useErrorHandler } from "react-error-boundary";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 
-import { useAppContext } from "../../app/AppContext";
-import { injected } from "../../app/connectors";
 import { STATUS } from "../../common/constants";
 import { shortenAddress } from "../../common/utils";
-import { useEth } from "../../common/hooks";
 import { Button, Loader } from "../../common/core";
+import { useEth } from "../../common/hooks";
 
-export default function ConnectButton() {
+import { injected } from "./auth.connectors";
+import { setContentError } from "./auth.slice";
+
+export default function Auth() {
   const history = useHistory();
-  const { setContentError } = useAppContext();
   const { activate, active, account, deactivate } = useWeb3React();
+
   const [status, setStatus] = useState(STATUS.idle);
   const handleError = useErrorHandler();
   const { ethBalance } = useEth();
