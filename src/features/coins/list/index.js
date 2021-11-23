@@ -47,7 +47,7 @@ export default function CoinsList() {
     loadCoins();
 
     return () => abortController.abort();
-  }, []);
+  }, [dispatch, handleError]);
 
   const coinsRows = coins.map(
     (

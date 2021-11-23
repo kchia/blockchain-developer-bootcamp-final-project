@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ConnectButton } from "../../../common/core";
+import { ConnectButton } from "../../../features";
 import styles from "./header.module.css";
 import Navigation from "../navigation";
 

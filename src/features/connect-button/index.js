@@ -3,11 +3,12 @@ import { useHistory } from "react-router-dom";
 import { useErrorHandler } from "react-error-boundary";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 
-import { useAppContext } from "../../../app/AppContext";
-import { injected } from "../../../app/connectors";
-import { STATUS } from "../../constants";
-import { shortenAddress } from "../../utils";
-import { Button, Loader } from "../index";
+import { useAppContext } from "../../app/AppContext";
+import { injected } from "../../app/connectors";
+import { STATUS } from "../../common/constants";
+import { shortenAddress } from "../../common/utils";
+import { useEth } from "../../common/hooks";
+import { Button, Loader } from "../../common/core";
 
 export default function ConnectButton() {
   const history = useHistory();
@@ -15,6 +16,7 @@ export default function ConnectButton() {
   const { activate, active, account, deactivate } = useWeb3React();
   const [status, setStatus] = useState(STATUS.idle);
   const handleError = useErrorHandler();
+  const { ethBalance } = useEth();
 
   async function handleConnectButtonClick() {
     if (!window.ethereum) {
@@ -31,7 +33,7 @@ export default function ConnectButton() {
       handleError(
         new Error(
           error instanceof UnsupportedChainIdError
-            ? "Only Ropsten supported."
+            ? "Only Ropsten and Rinkeby supported."
             : `Sorry, we're having trouble activating the wallet: ${error}`
         )
       );
@@ -57,6 +59,7 @@ export default function ConnectButton() {
     ) : (
       <>
         <h3>{shortenAddress(account)}</h3>
+        <h3>{ethBalance}</h3>
         <Button text="log out" handleClick={handleLogoutButtonClick} />
       </>
     );
