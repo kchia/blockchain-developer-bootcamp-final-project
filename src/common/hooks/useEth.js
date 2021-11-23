@@ -15,14 +15,16 @@ export default function useEth() {
 
   useEffect(() => {
     (async () => {
-      const balance = await library.getBalance(account);
-      dispatch(
-        setEthBalance(
-          library && active && account
-            ? parseFloat(formatEther(balance)).toPrecision(4)
-            : "--"
-        )
-      );
+      if (library) {
+        const balance = await library.getBalance(account);
+        dispatch(
+          setEthBalance(
+            active && account
+              ? parseFloat(formatEther(balance)).toPrecision(4)
+              : "--"
+          )
+        );
+      }
     })();
   }, []);
 
