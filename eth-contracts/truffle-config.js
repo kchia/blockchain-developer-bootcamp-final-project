@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
+
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -28,6 +28,7 @@ dotenv.config();
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const mnemonic = process.env.ROPSTEN_MNEMONIC;
+const infuraKey = process.env.INFURA_KEY;
 
 module.exports = {
   /**
@@ -75,6 +76,17 @@ module.exports = {
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
     },
+    rinkeby: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          `https://rinkeby.infura.io/v3/${infuraKey}`
+        ),
+      skipDryRun: true,
+      network_id: 4, // rinkeby's id
+      gas: 4500000, // rinkeby has a lower block limit than mainnet
+      gasPrice: 10000000000,
+    },
     // Useful for private networks
     // private: {
     // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),
@@ -91,7 +103,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.0", // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.7", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {

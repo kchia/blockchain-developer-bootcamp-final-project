@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
+import { ConnectButton } from "../../../common/core";
 import styles from "./header.module.css";
+import Navigation from "../navigation";
 
 export default function Header() {
   return (
-    <header>
-      <Link className={styles.headerLink} to="/">
-        <h1>Crypto Project Template</h1>
-      </Link>
+    <header className={styles.headerContainer}>
+      <div>
+        <Link className={styles.headerLink} to="/">
+          <h1>Consensys Final Project</h1>
+        </Link>
+        <Navigation />
+      </div>
+      <ConnectButton />
     </header>
   );
 }

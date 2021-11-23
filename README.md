@@ -1,6 +1,23 @@
 # [Final Project]
 
 [One-sentence description of final project]
+NFTs (Non-Fungible Tokens)
+each token is unique
+each NFT has its own characteristics
+ERC-721 is the most popular token standard
+list NFT on OpenSea on the rinkeby testnet
+Chainlink + NFTs = dynamic NFTs, more powerful version of NFTs
+provably random attributes that change over time
+NFT that changes prices of an asset
+
+NFT metadata - image and attributes are the metadata, which are expensive to store on-chain
+store data off-chain on a server but that's not decentralized.
+In comes Filecoin, store metadata in a decentralized manner.
+
+IPFS - Filecoin is built on top of IPFS
+IPFS does not guarantee data remain online but Filecoin does
+NFT.storage is what will be used.
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -39,9 +56,23 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 2. As a user, I want to ..., so that I can ...
 3. As a user, I want to ..., so that I can ..,
 
+## Tech Stack
+
+### Chainlink VRF
+
+Make a dynamic NFT with provably random trait using the Chainlink VRF
+Connected to the Chainlink data feed
+### Filecoin
+
+The NFT is stored on Filecoin
+
+
 ## Installation
 ### Prerequisites
 
+
+- MetaMask Wallet 
+- Git
 - Node.js v.14+
 - Truffle
 - Ganache
@@ -75,9 +106,12 @@ Then, run `truffle develop`.
 ### Directory Structure
 
 - `/.github/workflows`: contains the configuration files for building and deploying the app automatically
-- `/contracts`: contains the smart contract code written in Solidity
-- `/migrations`: contains the Truffle migration files
-- `/test`: contains the smart contract test code
+- `/eth-contracts`
+  - `/contracts`: contains the smart contract code written in Solidity
+  - `/migrations`: contains the Truffle migration files
+  - `/test`: contains the smart contract test code
+  - `/truffle-config.js`: configuration file for local smart contract development 
+  - `/scripts`: contains scripts for calling the smart contract
 - `/src`
   - `/api`
     - `client.js`: a client wrapper around the Fetch API that supports `GET`, `POST`, `PUT`, and `DELETE` requests
@@ -111,7 +145,6 @@ Then, run `truffle develop`.
 - `Procfile`: a file containing commands to be run by the app's dynos after it is deployed to Heroku  
 - `routes.json`: routing logic for your fake REST API
 - `server.js`: the server setup script that the app's dynos will run after the app is deployed to Heroku
-- `truffle-config.js`: configuration file for local smart contract development 
 
 The following principles were applied in the design of the folder structure:
 

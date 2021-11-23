@@ -10,8 +10,6 @@ import {
   NoMatch,
 } from "../../features";
 
-import { headerContainer, mainContainer } from "./layout.module.css";
-import Navigation from "./navigation";
 import Header from "./header";
 import Footer from "./footer";
 import RouteWithErrorBoundary from "./route-with-error-boundary";
@@ -31,11 +29,8 @@ export default function Layout() {
 
   return (
     <>
-      <div className={headerContainer}>
-        <Header />
-        <Navigation />
-      </div>
-      <main className={mainContainer}>
+      <Header />
+      <main>
         <Switch>
           <Route exact path="/">
             <Redirect to="/coins" />

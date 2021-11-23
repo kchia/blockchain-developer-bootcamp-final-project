@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { ErrorBoundary, useErrorHandler } from "react-error-boundary";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useWeb3React } from "@web3-react/core";
 
 import { ErrorFallback, Loader } from "../../../common/core";
 import { STATUS } from "../../../common/constants";
@@ -30,6 +31,7 @@ export default function CoinsList() {
   const status = useSelector(selectFetchCoinsStatus);
   const dispatch = useDispatch();
   const handleError = useErrorHandler();
+  const { active } = useWeb3React();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -112,8 +114,11 @@ export default function CoinsList() {
       />
     );
 
+  const notActive = !active && <h3>Connect wallet to continue</h3>;
+
   return (
     <section className={container}>
+      {notActive}
       <h2>Top 20 Coins by Market Cap</h2>
       {content}
     </section>
