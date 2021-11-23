@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-
 import { useErrorHandler } from "react-error-boundary";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 
@@ -10,20 +9,20 @@ import { Button, Loader } from "../../common/core";
 import { useEth } from "../../common/hooks";
 
 import { injected } from "./auth.connectors";
-import { setContentError } from "./auth.slice";
 
 export default function Auth() {
-  const history = useHistory();
-  const { activate, active, account, deactivate } = useWeb3React();
-
   const [status, setStatus] = useState(STATUS.idle);
+  const { account, activate, active, deactivate } = useWeb3React();
+  const history = useHistory();
   const handleError = useErrorHandler();
-  const { ethBalance } = useEth();
+  const { ethBalance, fetchEthBalance } = useEth();
 
   async function handleConnectButtonClick() {
     if (!window.ethereum) {
-      setContentError(
-        "Looks like you don't have Metamask, you'll need it to use this app."
+      handleError(
+        new Error(
+          "Looks like you don't have Metamask, you'll need it to use this app."
+        )
       );
       return;
     }
@@ -31,6 +30,7 @@ export default function Auth() {
     try {
       setStatus(STATUS.loading);
       await activate(injected);
+      await fetchEthBalance();
     } catch (error) {
       handleError(
         new Error(
