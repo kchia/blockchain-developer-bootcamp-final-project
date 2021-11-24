@@ -1,23 +1,25 @@
-import { useEffect } from "react";
 import { useErrorHandler } from "react-error-boundary";
 import { formatEther } from "@ethersproject/units";
-import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 
 import { STATUS } from "../../common/constants";
-import { shortenAddress } from "../../common/utils";
 import { Button, Loader } from "../../common/core";
 import { useEth } from "../../common/hooks";
+import { shortenAddress } from "../../common/utils";
 
 import { injected } from "./auth.connectors";
 
 export default function Auth() {
-  const { account, activate, active, deactivate } = useWeb3React();
-  const { ethBalance, loadEthBalance, status } = useEth();
-  const handleError = useErrorHandler();
+  const {
+    activate,
+    active,
+    deactivate,
+    account,
+    ethBalance,
+    status,
+    UnsupportedChainIdError,
+  } = useEth();
 
-  useEffect(() => {
-    loadEthBalance();
-  }, [active]);
+  const handleError = useErrorHandler();
 
   async function handleConnectButtonClick() {
     if (!window.ethereum) {
