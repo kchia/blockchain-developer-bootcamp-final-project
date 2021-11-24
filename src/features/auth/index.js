@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 import { useErrorHandler } from "react-error-boundary";
+import { formatEther } from "@ethersproject/units";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 
 import { STATUS } from "../../common/constants";
@@ -11,11 +11,13 @@ import { useEth } from "../../common/hooks";
 import { injected } from "./auth.connectors";
 
 export default function Auth() {
-  const [status, setStatus] = useState(STATUS.idle);
   const { account, activate, active, deactivate } = useWeb3React();
-  const history = useHistory();
+  const { ethBalance, loadEthBalance, status } = useEth();
   const handleError = useErrorHandler();
-  const { ethBalance, fetchEthBalance } = useEth();
+
+  useEffect(() => {
+    loadEthBalance();
+  }, [active]);
 
   async function handleConnectButtonClick() {
     if (!window.ethereum) {
@@ -28,9 +30,7 @@ export default function Auth() {
     }
 
     try {
-      setStatus(STATUS.loading);
       await activate(injected);
-      await fetchEthBalance();
     } catch (error) {
       handleError(
         new Error(
@@ -39,19 +39,21 @@ export default function Auth() {
             : `Sorry, we're having trouble activating the wallet: ${error}`
         )
       );
-    } finally {
-      setStatus(STATUS.idle);
     }
   }
 
   async function handleLogoutButtonClick() {
     try {
       await deactivate();
-      history.push("/");
     } catch (error) {
       handleError(new Error("Sorry, we're having trouble logging out."));
     }
   }
+
+  const balance =
+    (typeof ethBalance === "object" &&
+      parseFloat(formatEther(ethBalance)).toPrecision(4)) ||
+    ethBalance;
 
   const content =
     status === STATUS.loading ? (
@@ -61,7 +63,7 @@ export default function Auth() {
     ) : (
       <>
         <h3>{shortenAddress(account)}</h3>
-        <h3>{ethBalance}</h3>
+        <h3>{balance}</h3>
         <Button text="log out" handleClick={handleLogoutButtonClick} />
       </>
     );

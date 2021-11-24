@@ -66,7 +66,7 @@ export default function CoinsList() {
         priceChange1d < 0 ? negative : positive;
 
       return (
-        <tr className={tableRow} key={originalAssetId}>
+        <tr className={tableRow} key={`${originalAssetId}-${index}`}>
           <td className={tableCell}>{rank}</td>
           <td className={tableCell}>
             <Link to={`/coins/${originalAssetId}`}>
