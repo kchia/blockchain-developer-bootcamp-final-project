@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -26,9 +24,9 @@ require("dotenv").config();
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
+require("dotenv").config();
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const mnemonic = process.env.ROPSTEN_MNEMONIC;
-const infuraKey = process.env.INFURA_KEY;
+const { MNEMONIC, RINKEBY_RPC_URL } = process.env;
 
 module.exports = {
   /**
@@ -64,28 +62,12 @@ module.exports = {
     // },
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
-    ropsten: {
-      provider: () =>
-        new HDWalletProvider(
-          mnemonic,
-          `https://ropsten.infura.io/v3/YOUR-PROJECT-ID`
-        ),
-      network_id: 3, // Ropsten's id
-      gas: 5500000, // Ropsten has a lower block limit than mainnet
-      confirmations: 2, // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
-    },
     rinkeby: {
-      provider: () =>
-        new HDWalletProvider(
-          mnemonic,
-          `https://rinkeby.infura.io/v3/${infuraKey}`
-        ),
-      skipDryRun: true,
+      provider: () => new HDWalletProvider(MNEMONIC, RINKEBY_RPC_URL),
       network_id: 4, // rinkeby's id
-      gas: 4500000, // rinkeby has a lower block limit than mainnet
-      gasPrice: 10000000000,
+      skipDryRun: true,
+      // gas: 4500000, // rinkeby has a lower block limit than mainnet
+      // gasPrice: 10000000000,
     },
     // Useful for private networks
     // private: {
@@ -96,14 +78,14 @@ module.exports = {
   },
 
   // Set default mocha options here, use special reporters etc.
-  mocha: {
-    // timeout: 100000
-  },
+  // mocha: {
+  // timeout: 100000
+  // },
 
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.7", // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.9", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {

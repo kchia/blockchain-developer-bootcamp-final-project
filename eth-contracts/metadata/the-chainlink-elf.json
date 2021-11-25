@@ -1,0 +1,14 @@
+{
+  "name": "The Chainlink Elf",
+  "description": "asdf",
+  "image": "",
+  "attributes": [
+    { "trait_type": "Strength", "value": 430 },
+    { "trait_type": "Dexterity", "value": 65 },
+    { "trait_type": "Constitution", "value": 84 },
+    { "trait_type": "Intelligence", "value": 72 },
+    { "trait_type": "Wisdom", "value": 50 },
+    { "trait_type": "Charisma", "value": 10 },
+    { "trait_type": "Experience", "value": 0 }
+  ]
+}

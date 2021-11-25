@@ -65,11 +65,8 @@ Connected to the Chainlink data feed
 ### Filecoin
 
 The NFT is stored on Filecoin
-
-
 ## Installation
 ### Prerequisites
-
 
 - MetaMask Wallet 
 - Git
@@ -95,22 +92,19 @@ Merging code into `main` automatically kicks off the deployment to Heroku.
 
 ### Running a local Ganache blockchain
 
-In your terminal, run `ganache-cli -p 7545` to start an Ethereum blockchain at port `7545`.
-
-Then, run `truffle develop`.
-
-`migrate`
-
-`test`
-
+- In your terminal, run `ganache-cli -p 7545` to start an Ethereum blockchain at port `7545`.
+- Run `truffle compile` to create the build artifacts directory, which contain the bytecodes version of the smart contracts, ABIs, etc.
+- Run `truffle test` to execute the unit tests for the smart contracts.
+- Run `truffle migrate --network rinkeby` to deploy the smart contracts to the Rinkeby network.
 ### Directory Structure
 
 - `/.github/workflows`: contains the configuration files for building and deploying the app automatically
 - `/eth-contracts`
-  - `/contracts`: contains the smart contract code written in Solidity
-  - `/migrations`: contains the Truffle migration files
+  - `/contracts`: contains smart contract code written in Solidity
+    - `Migrations.sol`: A contract that keeps track of changes made to the code onchain to avoid duplicative deployment 
+  - `/migrations`: contains the Truffle migration files that describe how to deploy the project's smart contracts
   - `/test`: contains the smart contract test code
-  - `/truffle-config.js`: configuration file for local smart contract development 
+  - `/truffle-config.js`: configuration and settings file for smart contract development and deployment
   - `/scripts`: contains scripts for calling the smart contract
 - `/src`
   - `/api`

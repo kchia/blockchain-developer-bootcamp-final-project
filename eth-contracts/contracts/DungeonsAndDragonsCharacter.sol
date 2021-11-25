@@ -10,14 +10,21 @@ pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-contract DungeonsAndDragonsCharacter is ERC721URIStorage, VRFConsumerBase {
+contract DungeonsAndDragonsCharacter is
+    ERC721URIStorage,
+    VRFConsumerBase,
+    Ownable
+{
     AggregatorV3Interface internal priceFeed;
     bytes32 internal keyHash;
     uint256 internal fee;
+    uint256 public randomResult;
     address public VRFCoordinator;
-    address public linkToken;
+    address public LinkToken;
 
     struct Character {
         int256 strength;
@@ -34,37 +41,51 @@ contract DungeonsAndDragonsCharacter is ERC721URIStorage, VRFConsumerBase {
 
     mapping(bytes32 => string) public requestToCharacterName;
     mapping(bytes32 => address) public requestToSender;
+    mapping(bytes32 => uint256) requestToTokenId;
 
     event RequestedCharacter(bytes32 indexed requestId);
 
     constructor(
         address _VRFCoordinator,
-        address _linkToken,
+        address _LinkToken,
         bytes32 _keyHash,
         address _priceFeed
     )
-        public
-        VRFConsumeBase(_VRFCoordinator, _linkToken)
+        VRFConsumerBase(_VRFCoordinator, _LinkToken)
         ERC721("DungeonsAndDragonsCharacter", "D&D")
     {
         VRFCoordinator = _VRFCoordinator;
-        priceFeed = _priceFeed;
-        linkToken = _linkToken;
+        priceFeed = AggregatorV3Interface(_priceFeed);
+        LinkToken = _LinkToken;
         keyHash = _keyHash;
-        fee = 0.1 * 10**10; // 0.1 LINK
+        fee = 0.1 * 10**18; // 0.1 LINK
     }
 
     function requestNewRandomCharacter(string memory name)
         public
         returns (bytes32)
     {
-        require(LINK.balanceOf(address(this)) >= fee, "Not enough LINK");
+        require(
+            LINK.balanceOf(address(this)) >= fee,
+            "Not enough LINK - fill contract with faucet"
+        );
         bytes32 requestId = requestRandomness(keyHash, fee);
-
         requestToCharacterName[requestId] = name;
         requestToSender[requestId] = msg.sender;
         emit RequestedCharacter(requestId);
         return requestId;
+    }
+
+    function getTokenURI(uint256 tokenId) public view returns (string memory) {
+        return tokenURI(tokenId);
+    }
+
+    function setTokenURI(uint256 tokenId, string memory _tokenURI) public {
+        require(
+            _isApprovedOrOwner(_msgSender(), tokenId),
+            "ERC721: transfer caller is not owner nor approved"
+        );
+        _setTokenURI(tokenId, _tokenURI);
     }
 
     function fulfillRandomness(bytes32 requestId, uint256 randomNumber)
@@ -95,22 +116,80 @@ contract DungeonsAndDragonsCharacter is ERC721URIStorage, VRFConsumerBase {
         _safeMint(requestToSender[requestId], id);
     }
 
-    function getLatestPrice() public view returns (int256) {
-        (, int256 price) = priceFeed.latestRoundData();
-        return price;
+    function getLevel(uint256 tokenId) public view returns (uint256) {
+        return sqrt(characters[tokenId].experience);
     }
 
     function getNumberOfCharacters() public view returns (uint256) {
         return characters.length;
     }
 
-    function getRandomNumber(uint256 _randomNumber, uint256 _otherRandomNumber)
+    function getCharacterOverView(uint256 tokenId)
+        public
+        view
+        returns (
+            string memory,
+            uint256,
+            uint256,
+            uint256
+        )
+    {
+        return (
+            characters[tokenId].name,
+            uint256(characters[tokenId].strength) +
+                characters[tokenId].dexterity +
+                characters[tokenId].constitution +
+                characters[tokenId].intelligence +
+                characters[tokenId].wisdom +
+                characters[tokenId].charisma,
+            getLevel(tokenId),
+            characters[tokenId].experience
+        );
+    }
+
+    function getLatestPrice() public view returns (int256) {
+        (, int256 price, , , ) = priceFeed.latestRoundData();
+        return price;
+    }
+
+    function getRandomNumber(uint256 _randomNumber, uint256 _nonce)
         private
         pure
         returns (uint256)
     {
-        return
-            uint256(keccak256(abi.encode(_randomNumber, _otherRandomNumber))) %
-            100;
+        return uint256(keccak256(abi.encode(_randomNumber, _nonce))) % 100;
+    }
+
+    function getCharacterStats(uint256 tokenId)
+        public
+        view
+        returns (
+            int256,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256
+        )
+    {
+        return (
+            characters[tokenId].strength,
+            characters[tokenId].dexterity,
+            characters[tokenId].constitution,
+            characters[tokenId].intelligence,
+            characters[tokenId].wisdom,
+            characters[tokenId].charisma,
+            characters[tokenId].experience
+        );
+    }
+
+    function sqrt(uint256 x) internal pure returns (uint256 y) {
+        uint256 z = (x + 1) / 2;
+        y = x;
+        while (z < y) {
+            y = z;
+            z = (x / z + z) / 2;
+        }
     }
 }
