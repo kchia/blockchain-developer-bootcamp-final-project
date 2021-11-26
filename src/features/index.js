@@ -1,9 +1,4 @@
-export { default as Canvas } from "./canvas";
-export { default as CoinsList } from "./coins/list";
-export { default as CoinView } from "./coins/view";
-export { default as FavoritesList } from "./favorites/list";
-export { default as FavoriteCreate } from "./favorites/create";
-export { default as FavoriteEdit } from "./favorites/edit";
 export { default as Auth } from "./auth";
+export { default as BubblesList } from "./bubbles/list";
+export { default as BubbleView } from "./bubbles/view";
 export { default as Mint } from "./mint";
-export { default as NoMatch } from "./no-match";

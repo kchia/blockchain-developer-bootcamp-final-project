@@ -1,6 +1,6 @@
 import Sketch from "react-p5";
 
-export default function Canvas() {
+export default function Bubble() {
   function setup(p5, canvasParentRef) {
     p5.createCanvas(500, 500).parent(canvasParentRef);
     p5.noStroke();
@@ -12,7 +12,7 @@ export default function Canvas() {
         p5.random(100)
       );
     }
-    p5.save("../../assets/images/bubbles.png");
+    // p5.save("../../assets/images/bubbles.png");
   }
 
   return <Sketch setup={setup} />;

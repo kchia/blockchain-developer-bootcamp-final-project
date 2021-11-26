@@ -61,7 +61,7 @@ export default function Auth() {
     status === STATUS.loading ? (
       <Loader />
     ) : status === STATUS.idle && !active ? (
-      <Button text="connect" handleClick={handleConnectButtonClick} />
+      <Button text="connect to web3" handleClick={handleConnectButtonClick} />
     ) : (
       <>
         <h3>{shortenAddress(account)}</h3>

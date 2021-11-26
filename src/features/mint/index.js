@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ABI from "../../abis/DungeonsAndDragonsCharacter.abi.json";
+import ABI from "../../abis/BubbleArtNFTContract.abi.json";
 import { Button } from "../../common/core";
 import { useContract } from "../../common/hooks";
 import { useWeb3React } from "@web3-react/core";
