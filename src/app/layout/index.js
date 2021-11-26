@@ -2,11 +2,13 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+  Canvas,
   CoinsList,
   CoinView,
   FavoritesList,
   FavoriteCreate,
   FavoriteEdit,
+  Mint,
   NoMatch,
 } from "../../features";
 
@@ -31,6 +33,8 @@ export default function Layout() {
     <>
       <Header />
       <main>
+        <Mint />
+        <Canvas />
         <Switch>
           <Route exact path="/">
             <Redirect to="/coins" />

@@ -10,7 +10,8 @@ import {
 } from "../../features/auth/auth.slice";
 
 export default function useEth() {
-  const { active, activate, deactivate, library, account } = useWeb3React();
+  const { chainId, active, activate, deactivate, library, account } =
+    useWeb3React();
   const dispatch = useDispatch();
   const ethBalance = useSelector(selectEthBalance);
   const status = useSelector(selectStatus);
@@ -38,6 +39,7 @@ export default function useEth() {
     active,
     account,
     activate,
+    chainId,
     deactivate,
     ethBalance,
     status,

@@ -1,6 +1,7 @@
-import { useAppContext } from "../../app/AppContext";
+import { useState } from "react";
 
 export default function useTransaction() {
-  const { setTxnStatus, txnStatus } = useAppContext();
-  return { setTxnStatus, txnStatus };
+  const { txHash, setTxHash } = useState("");
+  const { txStatus, setTxStatus } = useState("");
+  return { setTxStatus, setTxHash, txHash, txStatus };
 }

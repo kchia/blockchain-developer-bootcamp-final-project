@@ -23961,54 +23961,22 @@
   "ast": {
     "absolutePath": "/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/eth-contracts/contracts/DungeonsAndDragonsCharacter.sol",
     "exportedSymbols": {
-      "Address": [
-        2340
-      ],
-      "AggregatorV3Interface": [
-        739
-      ],
-      "Context": [
-        2362
-      ],
-      "DungeonsAndDragonsCharacter": [
-        489
-      ],
-      "ERC165": [
-        2589
-      ],
-      "ERC721": [
-        1754
-      ],
-      "ERC721URIStorage": [
-        2016
-      ],
-      "IERC165": [
-        2601
-      ],
-      "IERC721": [
-        1870
-      ],
-      "IERC721Metadata": [
-        2043
-      ],
-      "IERC721Receiver": [
-        1888
-      ],
-      "LinkTokenInterface": [
-        834
-      ],
-      "Ownable": [
-        938
-      ],
-      "Strings": [
-        2565
-      ],
-      "VRFConsumerBase": [
-        643
-      ],
-      "VRFRequestIDBase": [
-        693
-      ]
+      "Address": [2340],
+      "AggregatorV3Interface": [739],
+      "Context": [2362],
+      "DungeonsAndDragonsCharacter": [489],
+      "ERC165": [2589],
+      "ERC721": [1754],
+      "ERC721URIStorage": [2016],
+      "IERC165": [2601],
+      "IERC721": [1870],
+      "IERC721Metadata": [2043],
+      "IERC721Receiver": [1888],
+      "LinkTokenInterface": [834],
+      "Ownable": [938],
+      "Strings": [2565],
+      "VRFConsumerBase": [643],
+      "VRFRequestIDBase": [693]
     },
     "id": 490,
     "license": "MIT",
@@ -24016,11 +23984,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "0.8",
-          ".9"
-        ],
+        "literals": ["solidity", "0.8", ".9"],
         "nodeType": "PragmaDirective",
         "src": "687:22:0"
       },
@@ -24130,17 +24094,7 @@
         "fullyImplemented": true,
         "id": 489,
         "linearizedBaseContracts": [
-          489,
-          938,
-          643,
-          693,
-          2016,
-          1754,
-          2043,
-          1870,
-          2589,
-          2601,
-          2362
+          489, 938, 643, 693, 2016, 1754, 2043, 1870, 2589, 2601, 2362
         ],
         "name": "DungeonsAndDragonsCharacter",
         "nameLocation": "1042:27:0",
@@ -25508,10 +25462,7 @@
                       "id": 115,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2402:7:0",
                       "typeDescriptions": {
@@ -25539,9 +25490,7 @@
                   "src": "2402:126:0"
                 },
                 {
-                  "assignments": [
-                    129
-                  ],
+                  "assignments": [129],
                   "declarations": [
                     {
                       "constant": false,
@@ -25976,9 +25925,7 @@
                       "id": 162,
                       "name": "tokenURI",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        1963
-                      ],
+                      "overloadedDeclarations": [1963],
                       "referencedDeclaration": 1963,
                       "src": "2862:8:0",
                       "typeDescriptions": {
@@ -26212,10 +26159,7 @@
                       "id": 174,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2972:7:0",
                       "typeDescriptions": {
@@ -26395,18 +26339,14 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [
-              537
-            ],
+            "baseFunctions": [537],
             "body": {
               "id": 276,
               "nodeType": "Block",
               "src": "3270:791:0",
               "statements": [
                 {
-                  "assignments": [
-                    198
-                  ],
+                  "assignments": [198],
                   "declarations": [
                     {
                       "constant": false,
@@ -26467,9 +26407,7 @@
                   "src": "3280:30:0"
                 },
                 {
-                  "assignments": [
-                    203
-                  ],
+                  "assignments": [203],
                   "declarations": [
                     {
                       "constant": false,
@@ -26568,9 +26506,7 @@
                   "src": "3320:47:0"
                 },
                 {
-                  "assignments": [
-                    210
-                  ],
+                  "assignments": [210],
                   "declarations": [
                     {
                       "constant": false,
@@ -26651,9 +26587,7 @@
                   "src": "3377:38:0"
                 },
                 {
-                  "assignments": [
-                    216
-                  ],
+                  "assignments": [216],
                   "declarations": [
                     {
                       "constant": false,
@@ -26756,9 +26690,7 @@
                   "src": "3425:55:0"
                 },
                 {
-                  "assignments": [
-                    223
-                  ],
+                  "assignments": [223],
                   "declarations": [
                     {
                       "constant": false,
@@ -26861,9 +26793,7 @@
                   "src": "3490:55:0"
                 },
                 {
-                  "assignments": [
-                    230
-                  ],
+                  "assignments": [230],
                   "declarations": [
                     {
                       "constant": false,
@@ -26966,9 +26896,7 @@
                   "src": "3555:49:0"
                 },
                 {
-                  "assignments": [
-                    237
-                  ],
+                  "assignments": [237],
                   "declarations": [
                     {
                       "constant": false,
@@ -27071,9 +26999,7 @@
                   "src": "3614:51:0"
                 },
                 {
-                  "assignments": [
-                    244
-                  ],
+                  "assignments": [244],
                   "declarations": [
                     {
                       "constant": false,
@@ -27124,9 +27050,7 @@
                   "src": "3675:22:0"
                 },
                 {
-                  "assignments": [
-                    249
-                  ],
+                  "assignments": [249],
                   "declarations": [
                     {
                       "constant": false,
@@ -27486,10 +27410,7 @@
                       "id": 269,
                       "name": "_safeMint",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        1450,
-                        1479
-                      ],
+                      "overloadedDeclarations": [1450, 1479],
                       "referencedDeclaration": 1450,
                       "src": "4013:9:0",
                       "typeDescriptions": {
@@ -28680,13 +28601,7 @@
               "src": "5005:91:0",
               "statements": [
                 {
-                  "assignments": [
-                    null,
-                    366,
-                    null,
-                    null,
-                    null
-                  ],
+                  "assignments": [null, 366, null, null, null],
                   "declarations": [
                     null,
                     {
@@ -29802,9 +29717,7 @@
               "src": "5965:141:0",
               "statements": [
                 {
-                  "assignments": [
-                    455
-                  ],
+                  "assignments": [455],
                   "declarations": [
                     {
                       "constant": false,
@@ -30321,54 +30234,22 @@
   "legacyAST": {
     "absolutePath": "/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/eth-contracts/contracts/DungeonsAndDragonsCharacter.sol",
     "exportedSymbols": {
-      "Address": [
-        2340
-      ],
-      "AggregatorV3Interface": [
-        739
-      ],
-      "Context": [
-        2362
-      ],
-      "DungeonsAndDragonsCharacter": [
-        489
-      ],
-      "ERC165": [
-        2589
-      ],
-      "ERC721": [
-        1754
-      ],
-      "ERC721URIStorage": [
-        2016
-      ],
-      "IERC165": [
-        2601
-      ],
-      "IERC721": [
-        1870
-      ],
-      "IERC721Metadata": [
-        2043
-      ],
-      "IERC721Receiver": [
-        1888
-      ],
-      "LinkTokenInterface": [
-        834
-      ],
-      "Ownable": [
-        938
-      ],
-      "Strings": [
-        2565
-      ],
-      "VRFConsumerBase": [
-        643
-      ],
-      "VRFRequestIDBase": [
-        693
-      ]
+      "Address": [2340],
+      "AggregatorV3Interface": [739],
+      "Context": [2362],
+      "DungeonsAndDragonsCharacter": [489],
+      "ERC165": [2589],
+      "ERC721": [1754],
+      "ERC721URIStorage": [2016],
+      "IERC165": [2601],
+      "IERC721": [1870],
+      "IERC721Metadata": [2043],
+      "IERC721Receiver": [1888],
+      "LinkTokenInterface": [834],
+      "Ownable": [938],
+      "Strings": [2565],
+      "VRFConsumerBase": [643],
+      "VRFRequestIDBase": [693]
     },
     "id": 490,
     "license": "MIT",
@@ -30376,11 +30257,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "0.8",
-          ".9"
-        ],
+        "literals": ["solidity", "0.8", ".9"],
         "nodeType": "PragmaDirective",
         "src": "687:22:0"
       },
@@ -30490,17 +30367,7 @@
         "fullyImplemented": true,
         "id": 489,
         "linearizedBaseContracts": [
-          489,
-          938,
-          643,
-          693,
-          2016,
-          1754,
-          2043,
-          1870,
-          2589,
-          2601,
-          2362
+          489, 938, 643, 693, 2016, 1754, 2043, 1870, 2589, 2601, 2362
         ],
         "name": "DungeonsAndDragonsCharacter",
         "nameLocation": "1042:27:0",
@@ -31868,10 +31735,7 @@
                       "id": 115,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2402:7:0",
                       "typeDescriptions": {
@@ -31899,9 +31763,7 @@
                   "src": "2402:126:0"
                 },
                 {
-                  "assignments": [
-                    129
-                  ],
+                  "assignments": [129],
                   "declarations": [
                     {
                       "constant": false,
@@ -32336,9 +32198,7 @@
                       "id": 162,
                       "name": "tokenURI",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        1963
-                      ],
+                      "overloadedDeclarations": [1963],
                       "referencedDeclaration": 1963,
                       "src": "2862:8:0",
                       "typeDescriptions": {
@@ -32572,10 +32432,7 @@
                       "id": 174,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2972:7:0",
                       "typeDescriptions": {
@@ -32755,18 +32612,14 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [
-              537
-            ],
+            "baseFunctions": [537],
             "body": {
               "id": 276,
               "nodeType": "Block",
               "src": "3270:791:0",
               "statements": [
                 {
-                  "assignments": [
-                    198
-                  ],
+                  "assignments": [198],
                   "declarations": [
                     {
                       "constant": false,
@@ -32827,9 +32680,7 @@
                   "src": "3280:30:0"
                 },
                 {
-                  "assignments": [
-                    203
-                  ],
+                  "assignments": [203],
                   "declarations": [
                     {
                       "constant": false,
@@ -32928,9 +32779,7 @@
                   "src": "3320:47:0"
                 },
                 {
-                  "assignments": [
-                    210
-                  ],
+                  "assignments": [210],
                   "declarations": [
                     {
                       "constant": false,
@@ -33011,9 +32860,7 @@
                   "src": "3377:38:0"
                 },
                 {
-                  "assignments": [
-                    216
-                  ],
+                  "assignments": [216],
                   "declarations": [
                     {
                       "constant": false,
@@ -33116,9 +32963,7 @@
                   "src": "3425:55:0"
                 },
                 {
-                  "assignments": [
-                    223
-                  ],
+                  "assignments": [223],
                   "declarations": [
                     {
                       "constant": false,
@@ -33221,9 +33066,7 @@
                   "src": "3490:55:0"
                 },
                 {
-                  "assignments": [
-                    230
-                  ],
+                  "assignments": [230],
                   "declarations": [
                     {
                       "constant": false,
@@ -33326,9 +33169,7 @@
                   "src": "3555:49:0"
                 },
                 {
-                  "assignments": [
-                    237
-                  ],
+                  "assignments": [237],
                   "declarations": [
                     {
                       "constant": false,
@@ -33431,9 +33272,7 @@
                   "src": "3614:51:0"
                 },
                 {
-                  "assignments": [
-                    244
-                  ],
+                  "assignments": [244],
                   "declarations": [
                     {
                       "constant": false,
@@ -33484,9 +33323,7 @@
                   "src": "3675:22:0"
                 },
                 {
-                  "assignments": [
-                    249
-                  ],
+                  "assignments": [249],
                   "declarations": [
                     {
                       "constant": false,
@@ -33846,10 +33683,7 @@
                       "id": 269,
                       "name": "_safeMint",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        1450,
-                        1479
-                      ],
+                      "overloadedDeclarations": [1450, 1479],
                       "referencedDeclaration": 1450,
                       "src": "4013:9:0",
                       "typeDescriptions": {
@@ -35040,13 +34874,7 @@
               "src": "5005:91:0",
               "statements": [
                 {
-                  "assignments": [
-                    null,
-                    366,
-                    null,
-                    null,
-                    null
-                  ],
+                  "assignments": [null, 366, null, null, null],
                   "declarations": [
                     null,
                     {
@@ -36162,9 +35990,7 @@
               "src": "5965:141:0",
               "statements": [
                 {
-                  "assignments": [
-                    455
-                  ],
+                  "assignments": [455],
                   "declarations": [
                     {
                       "constant": false,

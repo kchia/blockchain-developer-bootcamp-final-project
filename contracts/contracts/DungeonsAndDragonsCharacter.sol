@@ -13,18 +13,26 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
 contract DungeonsAndDragonsCharacter is
+    ChainlinkClient,
     ERC721URIStorage,
     VRFConsumerBase,
     Ownable
 {
+    using Chainlink for Chainlink.Request;
+
     AggregatorV3Interface internal priceFeed;
     bytes32 internal keyHash;
     uint256 internal fee;
     uint256 public randomResult;
     address public VRFCoordinator;
     address public LinkToken;
+
+    uint256 public volume;
+    address private oracle;
+    bytes32 private jobId;
 
     struct Character {
         int256 strength;
@@ -54,6 +62,10 @@ contract DungeonsAndDragonsCharacter is
         VRFConsumerBase(_VRFCoordinator, _LinkToken)
         ERC721("DungeonsAndDragonsCharacter", "D&D")
     {
+        setPublicChainlinkToken();
+        oracle = 0x7AFe1118Ea78C1eae84ca8feE5C65Bc76CcF879e;
+        jobId = "6d1bfe27e7034b1d87b5270556b17277";
+
         VRFCoordinator = _VRFCoordinator;
         priceFeed = AggregatorV3Interface(_priceFeed);
         LinkToken = _LinkToken;
@@ -182,6 +194,49 @@ contract DungeonsAndDragonsCharacter is
             characters[tokenId].charisma,
             characters[tokenId].experience
         );
+    }
+
+    function requestVolumeData() public returns (bytes32 requestId) {
+        Chainlink.Request memory request = buildChainlinkRequest(
+            jobId,
+            address(this),
+            this.fulfill.selector
+        );
+
+        // Set the URL to perform the GET request on
+        request.add(
+            "get",
+            "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD"
+        );
+
+        // Set the path to find the desired data in the API response, where the response format is:
+        // {"RAW":
+        //   {"ETH":
+        //    {"USD":
+        //     {
+        //      "VOLUME24HOUR": xxx.xxx,
+        //     }
+        //    }
+        //   }
+        //  }
+        request.add("path", "RAW.ETH.USD.VOLUME24HOUR");
+
+        // Multiply the result by 1000000000000000000 to remove decimals
+        int256 timesAmount = 10**18;
+        request.addInt("times", timesAmount);
+
+        // Sends the request
+        return sendChainlinkRequestTo(oracle, request, fee);
+    }
+
+    /**
+     * Receive the response in the form of uint256
+     */
+    function fulfill(bytes32 _requestId, uint256 _volume)
+        public
+        recordChainlinkFulfillment(_requestId)
+    {
+        volume = _volume;
     }
 
     function sqrt(uint256 x) internal pure returns (uint256 y) {

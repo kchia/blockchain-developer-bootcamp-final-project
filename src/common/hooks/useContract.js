@@ -3,7 +3,7 @@ import { Contract } from "@ethersproject/contracts";
 import { AddressZero } from "@ethersproject/constants";
 import { useWeb3React } from "@web3-react/core";
 
-export function useContract(contractAddress, ABI) {
+export default function useContract(contractAddress, ABI) {
   const { library, account } = useWeb3React();
   if (contractAddress === AddressZero) {
     throw Error(`Invalid 'contractAddress' parameter '${contractAddress}'.`);

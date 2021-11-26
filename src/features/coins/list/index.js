@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ErrorBoundary, useErrorHandler } from "react-error-boundary";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useWeb3React } from "@web3-react/core";
 
+import ABI from "../../../abis/DungeonsAndDragonsCharacter.abi.json";
 import { ErrorFallback, Loader } from "../../../common/core";
 import { STATUS } from "../../../common/constants";
 import { logError } from "../../../common/utils";
+import { useContract } from "../../../common/hooks";
 
 import {
   coinsReset,
@@ -27,11 +29,25 @@ import {
 } from "./list.module.css";
 
 export default function CoinsList() {
+  const [characterCount, setCharacterCount] = useState(0);
   const coins = useSelector(selectAllCoins);
   const status = useSelector(selectFetchCoinsStatus);
   const dispatch = useDispatch();
   const handleError = useErrorHandler();
   const { active } = useWeb3React();
+  const contract = useContract(
+    "0xF96bB6800E858b44150487e28C0DffdB1E7AaD41",
+    ABI
+  );
+
+  useEffect(() => {
+    (async () => {
+      if (!!contract) {
+        const count = await contract.getNumberOfCharacters();
+        setCharacterCount(count.toNumber());
+      }
+    })();
+  }, [contract]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -119,6 +135,7 @@ export default function CoinsList() {
   return (
     <section className={container}>
       {notActive}
+      {characterCount}
       <h2>Top 20 Coins by Market Cap</h2>
       {content}
     </section>

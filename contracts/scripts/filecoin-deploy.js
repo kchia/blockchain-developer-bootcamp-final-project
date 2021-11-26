@@ -11,7 +11,7 @@ async function updateMetadataImage(metadata) {
   metadata.image = new File(
     [
       fs.readFileSync(
-        `/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/eth-contracts/images/${imageName}`
+        `/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/contracts/images/${imageName}`
       ),
     ],
     imageName,
@@ -24,12 +24,12 @@ async function updateMetadataImage(metadata) {
 
 async function main() {
   const files = fs.readdirSync(
-    "/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/eth-contracts/metadata"
+    "/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/contracts/metadata"
   );
   const characters = files.map((file) => {
     const character = JSON.parse(
       fs.readFileSync(
-        `/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/eth-contracts/metadata/${file}`,
+        `/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/contracts/metadata/${file}`,
         { encoding: "utf8" }
       )
     );
