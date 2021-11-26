@@ -8,7 +8,7 @@ export default function Header() {
     <header className={styles.headerContainer}>
       <div>
         <Link className={styles.headerLink} to="/">
-          <h1>BubbleArtNFT</h1>
+          <h1>UniqueEllipticalsNFT</h1>
         </Link>
         <Navigation />
       </div>

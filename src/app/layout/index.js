@@ -4,7 +4,7 @@ import {
   HomePage,
   AboutPage,
   HowItWorksPage,
-  BubblesPage,
+  EllipticalsPage,
   NoMatchPage,
 } from "../../pages";
 
@@ -34,8 +34,8 @@ export default function Layout() {
             <HowItWorksPage />
           </RouteWithErrorBoundary>
 
-          <RouteWithErrorBoundary exact path="/bubbles">
-            <BubblesPage />
+          <RouteWithErrorBoundary exact path="/ellipticals">
+            <EllipticalsPage />
           </RouteWithErrorBoundary>
 
           <Route path="*">

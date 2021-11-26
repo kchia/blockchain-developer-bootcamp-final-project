@@ -8,7 +8,7 @@ export default function Navigation({
       name: "how it works",
       path: "/how-it-works",
     },
-    { name: "bubbles", path: "/bubbles" },
+    { name: "ellipticals", path: "/ellipticals" },
   ],
 }) {
   const navListItems = navLinksData.map(({ name, path }) => (

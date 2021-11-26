@@ -1,4 +1,4 @@
 export { default as Auth } from "./auth";
-export { default as BubblesList } from "./bubbles/list";
-export { default as BubbleView } from "./bubbles/view";
-export { default as Mint } from "./mint";
+export { default as EllipticalsList } from "./ellipticals/list";
+export { default as EllipticalView } from "./ellipticals/view";
+export { default as MintEllipticalArtForm } from "./ellipticals/form";

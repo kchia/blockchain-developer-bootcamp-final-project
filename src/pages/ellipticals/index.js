@@ -2,26 +2,28 @@ import { useEffect } from "react";
 import { ErrorBoundary, useErrorHandler } from "react-error-boundary";
 import { useSelector, useDispatch } from "react-redux";
 
-import ABI from "../../abis/BubbleArtNFTContract.abi.json";
+import ABI from "../../abis/EllipticalArtNFTContract.abi.json";
 import { STATUS, NFT_CONTRACT_ADDRESS } from "../../common/constants";
 import { ErrorFallback, Loader } from "../../common/core";
 import { useContract } from "../../common/hooks";
 import { logError } from "../../common/utils";
-import { BubblesList } from "../../features";
+import { EllipticalsList } from "../../features";
 
 import {
-  bubblesReset,
-  fetchBubblesCount,
-  selectBubblesCount,
-  selectFetchBubblesCountStatus,
-} from "../../features/bubbles/bubbles.slice";
+  ellipticalsReset,
+  fetchEllipticalsCount,
+  selectEllipticalsCount,
+  selectFetchEllipticalsCountStatus,
+} from "../../features/ellipticals/ellipticals.slice";
 
-import styles from "./bubbles.module.css";
+import styles from "./ellipticals.module.css";
 
-export default function BubblesPage() {
-  const bubblesCount = useSelector(selectBubblesCount);
+export default function EllipticalsPage() {
+  const ellipticalsCount = useSelector(selectEllipticalsCount);
 
-  const fetchBubblesCountStatus = useSelector(selectFetchBubblesCountStatus);
+  const fetchEllipticalsCountStatus = useSelector(
+    selectFetchEllipticalsCountStatus
+  );
 
   const dispatch = useDispatch();
   const handleError = useErrorHandler();
@@ -32,7 +34,7 @@ export default function BubblesPage() {
     (async () => {
       try {
         if (!!contract) {
-          await dispatch(fetchBubblesCount(contract)).unwrap();
+          await dispatch(fetchEllipticalsCount(contract)).unwrap();
         }
       } catch (error) {
         handleError(error);
@@ -41,13 +43,13 @@ export default function BubblesPage() {
   }, [contract, dispatch, handleError]);
 
   const content =
-    fetchBubblesCountStatus === STATUS.loading ? (
+    fetchEllipticalsCountStatus === STATUS.loading ? (
       <Loader />
     ) : (
       <ErrorBoundary
-        children={<BubblesList />}
+        children={<EllipticalsList />}
         FallbackComponent={ErrorFallback}
-        onReset={() => dispatch(bubblesReset())}
+        onReset={() => dispatch(ellipticalsReset())}
         onError={logError}
       />
     );
@@ -55,7 +57,7 @@ export default function BubblesPage() {
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>
-        Browse all {bubblesCount} minted bubble art NFT...
+        Browse all {ellipticalsCount} minted Elliptical art NFT...
       </h2>
       {content}
     </section>

@@ -5,9 +5,9 @@ export default function AboutPage() {
     <section className={styles.container}>
       <h2 className={styles.title}>About</h2>
 
-      <h3>About bubblesNFT</h3>
+      <h3>About UniqueEllipticalsNFT</h3>
 
-      <p>There can only ever be 1,000 unique bubbles minted.</p>
+      <p>There can only ever be 1,000 unique elliptical art minted.</p>
 
       <p>
         Read more about <Link to="/how-it-works">how it works.</Link>

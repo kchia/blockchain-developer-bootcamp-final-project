@@ -37,8 +37,8 @@ export default function Auth() {
       handleError(
         new Error(
           error instanceof UnsupportedChainIdError
-            ? "Only Ropsten and Rinkeby supported."
-            : `Sorry, we're having trouble activating the wallet: ${error}`
+            ? "Only Rinkeby is supported."
+            : `Sorry, we're having trouble activating the wallet: ${error.message}`
         )
       );
     }
@@ -64,8 +64,8 @@ export default function Auth() {
       <Button text="connect to web3" handleClick={handleConnectButtonClick} />
     ) : (
       <>
-        <h3>{shortenAddress(account)}</h3>
-        <h3>{balance}</h3>
+        <p>Connected:{shortenAddress(account)}</p>
+        <p>ETH balance:{balance}</p>
         <Button text="log out" handleClick={handleLogoutButtonClick} />
       </>
     );

@@ -2,21 +2,21 @@ import { useEffect } from "react";
 import { useErrorHandler } from "react-error-boundary";
 import { useSelector, useDispatch } from "react-redux";
 
-import ABI from "../../../abis/BubbleArtNFTContract.abi.json";
+import ABI from "../../../abis/EllipticalArtNFTContract.abi.json";
 import { STATUS, NFT_CONTRACT_ADDRESS } from "../../../common/constants";
 import { Loader } from "../../../common/core";
 import { useContract } from "../../../common/hooks";
 import {
-  fetchBubbles,
-  selectAllBubbles,
-  selectFetchBubblesStatus,
-} from "../../../features/bubbles/bubbles.slice";
+  fetchEllipticals,
+  selectAllEllipticals,
+  selectFetchEllipticalsStatus,
+} from "../../../features/ellipticals/ellipticals.slice";
 
-import Bubble from "../view";
+import Elliptical from "../view";
 
-export default function BubblesList() {
-  const bubbles = useSelector(selectAllBubbles);
-  const fetchBubblesStatus = useSelector(selectFetchBubblesStatus);
+export default function EllipticalsList() {
+  const ellipticals = useSelector(selectAllEllipticals);
+  const fetchEllipticalsStatus = useSelector(selectFetchEllipticalsStatus);
   const dispatch = useDispatch();
   const handleError = useErrorHandler();
   const contract = useContract(NFT_CONTRACT_ADDRESS, ABI);
@@ -25,7 +25,7 @@ export default function BubblesList() {
     (async () => {
       try {
         if (!!contract) {
-          await dispatch(fetchBubbles(contract)).unwrap();
+          await dispatch(fetchEllipticals(contract)).unwrap();
         }
       } catch (error) {
         handleError(error);
@@ -34,12 +34,12 @@ export default function BubblesList() {
   }, [contract, dispatch, handleError]);
 
   const content =
-    fetchBubblesStatus === STATUS.loading ? (
+    fetchEllipticalsStatus === STATUS.loading ? (
       <Loader />
     ) : (
-      bubbles.map((bubble, index) => (
+      ellipticals.map((elliptical, index) => (
         <li key={index}>
-          <Bubble bubble={bubble} />
+          <Elliptical elliptical={elliptical} />
         </li>
       ))
     );
