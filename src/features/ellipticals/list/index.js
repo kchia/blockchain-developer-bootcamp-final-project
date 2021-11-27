@@ -10,7 +10,7 @@ import {
   fetchEllipticals,
   selectAllEllipticals,
   selectFetchEllipticalsStatus,
-} from "../../../features/ellipticals/ellipticals.slice";
+} from "../ellipticals.slice";
 
 import Elliptical from "../view";
 

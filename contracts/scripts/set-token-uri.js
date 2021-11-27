@@ -1,8 +1,8 @@
-const DungeonsAndDragons = artifacts.require("DungeonsAndDragonsCharacter");
-const TOKENID = 0;
+const EllipticalArtNFT = artifacts.require("EllipticalArtNFT");
+
 module.exports = async (callback) => {
   try {
-    const dnd = await DungeonsAndDragons.deployed();
+    const dnd = await EllipticalArtNFT.deployed();
     console.log("Let's set the tokenURI of your characters");
     const tx = await dnd.setTokenURI(
       0,

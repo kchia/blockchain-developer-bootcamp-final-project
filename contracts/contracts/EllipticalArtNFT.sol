@@ -1,10 +1,3 @@
-// --Are commented to the specs described by NatSpec Solidity documentation: https://docs.soliditylang.org/en/latest/natspec-format.html
-// --Use at least two design patterns from the "Smart Contracts" section: https://docs.google.com/document/d/1tthsXLlv5BDXEGUfoP6_MAsL_8_T0sRBNQs_1OnPxak/edit
-// --Protect against two attack vectors from the "Smart Contracts" section with its the SWC number: https://docs.google.com/document/d/1tthsXLlv5BDXEGUfoP6_MAsL_8_T0sRBNQs_1OnPxak/edit
-// --Inherits from at least one library or interface
-// --Can be easily compiled, migrated and tested? YES
-// -- use Chainlink Keepers to pull in data and make NFTs dynamic
-
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
@@ -13,16 +6,8 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
-contract DungeonsAndDragonsCharacter is
-    ChainlinkClient,
-    ERC721URIStorage,
-    VRFConsumerBase,
-    Ownable
-{
-    using Chainlink for Chainlink.Request;
-
+contract EllipticalArtNFT is ERC721URIStorage, VRFConsumerBase, Ownable {
     AggregatorV3Interface internal priceFeed;
     bytes32 internal keyHash;
     uint256 internal fee;
@@ -30,28 +15,25 @@ contract DungeonsAndDragonsCharacter is
     address public VRFCoordinator;
     address public LinkToken;
 
-    uint256 public volume;
-    address private oracle;
-    bytes32 private jobId;
-
-    struct Character {
-        int256 strength;
-        uint256 dexterity;
-        uint256 constitution;
-        uint256 intelligence;
-        uint256 wisdom;
-        uint256 charisma;
-        uint256 experience;
+    struct Elliptical {
+        uint8 v1;
+        uint8 v2;
+        uint8 v3;
+        uint8 alpha;
+        uint8 x;
+        uint8 y;
+        uint8 w;
+        uint8 h;
         string name;
     }
 
-    Character[] public characters;
+    Elliptical[] public ellipticals;
 
-    mapping(bytes32 => string) public requestToCharacterName;
+    mapping(bytes32 => string) public requestToEllipticalName;
     mapping(bytes32 => address) public requestToSender;
     mapping(bytes32 => uint256) requestToTokenId;
 
-    event RequestedCharacter(bytes32 indexed requestId);
+    event RequestedElliptical(bytes32 indexed requestId);
 
     constructor(
         address _VRFCoordinator,
@@ -60,12 +42,8 @@ contract DungeonsAndDragonsCharacter is
         address _priceFeed
     )
         VRFConsumerBase(_VRFCoordinator, _LinkToken)
-        ERC721("DungeonsAndDragonsCharacter", "D&D")
+        ERC721("EllipticalArtNFT", "EA")
     {
-        setPublicChainlinkToken();
-        oracle = 0x7AFe1118Ea78C1eae84ca8feE5C65Bc76CcF879e;
-        jobId = "6d1bfe27e7034b1d87b5270556b17277";
-
         VRFCoordinator = _VRFCoordinator;
         priceFeed = AggregatorV3Interface(_priceFeed);
         LinkToken = _LinkToken;
@@ -73,18 +51,19 @@ contract DungeonsAndDragonsCharacter is
         fee = 0.1 * 10**18; // 0.1 LINK
     }
 
-    function requestNewRandomCharacter(string memory name)
-        public
-        returns (bytes32)
-    {
+    function requestNewRandomElliptical(
+        string memory name,
+        string memory description,
+        string memory image
+    ) public returns (bytes32) {
         require(
             LINK.balanceOf(address(this)) >= fee,
-            "Not enough LINK - fill contract with faucet"
+            "Please fill contract with LINK"
         );
         bytes32 requestId = requestRandomness(keyHash, fee);
-        requestToCharacterName[requestId] = name;
+        requestToEllipticalName[requestId] = name;
         requestToSender[requestId] = msg.sender;
-        emit RequestedCharacter(requestId);
+        emit RequestedElliptical(requestId);
         return requestId;
     }
 
@@ -128,15 +107,11 @@ contract DungeonsAndDragonsCharacter is
         _safeMint(requestToSender[requestId], id);
     }
 
-    function getLevel(uint256 tokenId) public view returns (uint256) {
-        return sqrt(characters[tokenId].experience);
+    function getEllipticalsCount() public view returns (uint256) {
+        return ellipticals.length;
     }
 
-    function getNumberOfCharacters() public view returns (uint256) {
-        return characters.length;
-    }
-
-    function getCharacterOverView(uint256 tokenId)
+    function getEllipticalOverView(uint256 tokenId)
         public
         view
         returns (
@@ -194,57 +169,5 @@ contract DungeonsAndDragonsCharacter is
             characters[tokenId].charisma,
             characters[tokenId].experience
         );
-    }
-
-    function requestVolumeData() public returns (bytes32 requestId) {
-        Chainlink.Request memory request = buildChainlinkRequest(
-            jobId,
-            address(this),
-            this.fulfill.selector
-        );
-
-        // Set the URL to perform the GET request on
-        request.add(
-            "get",
-            "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD"
-        );
-
-        // Set the path to find the desired data in the API response, where the response format is:
-        // {"RAW":
-        //   {"ETH":
-        //    {"USD":
-        //     {
-        //      "VOLUME24HOUR": xxx.xxx,
-        //     }
-        //    }
-        //   }
-        //  }
-        request.add("path", "RAW.ETH.USD.VOLUME24HOUR");
-
-        // Multiply the result by 1000000000000000000 to remove decimals
-        int256 timesAmount = 10**18;
-        request.addInt("times", timesAmount);
-
-        // Sends the request
-        return sendChainlinkRequestTo(oracle, request, fee);
-    }
-
-    /**
-     * Receive the response in the form of uint256
-     */
-    function fulfill(bytes32 _requestId, uint256 _volume)
-        public
-        recordChainlinkFulfillment(_requestId)
-    {
-        volume = _volume;
-    }
-
-    function sqrt(uint256 x) internal pure returns (uint256 y) {
-        uint256 z = (x + 1) / 2;
-        y = x;
-        while (z < y) {
-            y = z;
-            z = (x / z + z) / 2;
-        }
     }
 }

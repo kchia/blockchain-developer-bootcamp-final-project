@@ -21,10 +21,12 @@ const fetchEllipticalsCount = createAsyncThunk(
 
 const mintRandomElliptical = createAsyncThunk(
   "ellipticals/randomEllipticalMinted",
-  (contract, { getState }) => {
+  ({ contract, signer, name, description, image }, { getState }) => {
     const { mintRandomEllipticalStatus } = getState().ellipticals;
     if (mintRandomEllipticalStatus !== STATUS.loading) return;
-    return contract.requestNewRandomElliptical();
+    return contract
+      .connect(signer)
+      .requestNewRandomElliptical(name, description, image);
   }
 );
 

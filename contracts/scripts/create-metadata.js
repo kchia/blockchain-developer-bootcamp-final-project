@@ -1,4 +1,4 @@
-const DungeonsAndDragons = artifacts.require("DungeonsAndDragonsCharacter");
+const EllipticalArtNFT = artifacts.require("EllipticalArtNFT");
 const fs = require("fs");
 
 const metadataTemple = {
@@ -38,7 +38,7 @@ const metadataTemple = {
 };
 
 module.exports = async (callback) => {
-  const dnd = await DungeonsAndDragons.deployed();
+  const dnd = await EllipticalArtNFT.deployed();
   const length = await dnd.getNumberOfCharacters();
   let index = 0;
   while (index < length) {
@@ -59,7 +59,6 @@ module.exports = async (callback) => {
       console.log("test");
       continue;
     }
-    console.log(characterMetadata["name"]);
     characterMetadata["attributes"][0]["value"] =
       characterOverview["strength"]["words"][0];
     characterMetadata["attributes"][1]["value"] =

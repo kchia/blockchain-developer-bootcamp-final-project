@@ -1,8 +1,8 @@
-const DungeonsAndDragons = artifacts.require("DungeonsAndDragonsCharacter");
+const EllipticalArtNFT = artifacts.require("EllipticalArtNFT");
 
 module.exports = async (callback) => {
   try {
-    const dnd = await DungeonsAndDragons.deployed();
+    const dnd = await EllipticalArtNFT.deployed();
     console.log("Creating requests on contract:", dnd.address);
     const tx = await dnd.requestNewRandomCharacter("The Chainlink Knight");
     const tx2 = await dnd.requestNewRandomCharacter("The Chainlink Elf");

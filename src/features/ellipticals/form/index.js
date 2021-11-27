@@ -7,6 +7,10 @@ import ABI from "../../../abis/EllipticalArtNFTContract.abi.json";
 import { NFT_CONTRACT_ADDRESS } from "../../../common/constants";
 import { Button } from "../../../common/core";
 import { useContract } from "../../../common/hooks";
+import {
+  mintRandomElliptical,
+  selectMintRandomEllipticalStatus,
+} from "../ellipticals.slice";
 import EllipticalView from "../view";
 
 export default function MintEllipticalArtForm() {
@@ -16,9 +20,11 @@ export default function MintEllipticalArtForm() {
     name: "",
   });
   const { txHash, setTxHash } = useState("");
+  const status = useSelector(selectMintRandomEllipticalStatus);
   const contract = useContract(NFT_CONTRACT_ADDRESS, ABI);
   const { chainId, library } = useWeb3React();
   const handleError = useErrorHandler();
+  const dispatch = useDispatch();
 
   function handleChange({ target: { name, value } }) {
     setFormData((data) => ({
@@ -34,16 +40,20 @@ export default function MintEllipticalArtForm() {
 
       if (signer) {
         try {
-          const tx = await contract
-            .connect(signer)
-            .requestNewRandomCharacter("Hou");
+          await dispatch(
+            mintRandomElliptical({
+              contract,
+              signer,
+              ...formData,
+            })
+          );
 
-          if (chainId && tx) {
-            setTxHash(tx.hash);
-          }
+          // if (chainId && tx) {
+          //   setTxHash(tx.hash);
+          // }
 
-          await tx.wait();
-          setTxHash(undefined);
+          // await tx.wait();
+          // setTxHash(undefined);
         } catch (error) {
           handleError(error);
         }
