@@ -16,15 +16,15 @@ contract EllipticalArtNFT is ERC721URIStorage, VRFConsumerBase, Ownable {
     address public LinkToken;
 
     struct Elliptical {
-        uint8 v1;
-        uint8 v2;
-        uint8 v3;
-        uint8 alpha;
-        uint8 x;
-        uint8 y;
-        uint8 w;
-        uint8 h;
         string name;
+        uint256 v1;
+        uint256 v2;
+        uint256 v3;
+        uint256 alpha;
+        uint256 x;
+        uint256 y;
+        uint256 w;
+        uint256 h;
     }
 
     Elliptical[] public ellipticals;
@@ -51,11 +51,10 @@ contract EllipticalArtNFT is ERC721URIStorage, VRFConsumerBase, Ownable {
         fee = 0.1 * 10**18; // 0.1 LINK
     }
 
-    function requestNewRandomElliptical(
-        string memory name,
-        string memory description,
-        string memory image
-    ) public returns (bytes32) {
+    function requestNewRandomElliptical(string memory name)
+        public
+        returns (bytes32)
+    {
         require(
             LINK.balanceOf(address(this)) >= fee,
             "Please fill contract with LINK"
@@ -83,27 +82,30 @@ contract EllipticalArtNFT is ERC721URIStorage, VRFConsumerBase, Ownable {
         internal
         override
     {
-        uint256 id = characters.length;
-        int256 strength = getLatestPrice() / 1000000000;
-        uint256 dexterity = randomNumber % 100;
-        uint256 constitution = getRandomNumber(randomNumber, 1);
-        uint256 intelligence = getRandomNumber(randomNumber, 2);
-        uint256 wisdom = getRandomNumber(randomNumber, 3);
-        uint256 charisma = getRandomNumber(randomNumber, 4);
-        uint256 experience = 0;
+        uint256 id = ellipticals.length;
+        uint256 v1 = uint256(getLatestPrice()) % 255;
+        uint256 v2 = getRandomNumber(randomNumber, 1, 255);
+        uint256 v3 = getRandomNumber(randomNumber, 2, 255);
+        uint256 alpha = getRandomNumber(randomNumber, 3, 255);
+        uint256 x = getRandomNumber(randomNumber, 4, 500);
+        uint256 y = getRandomNumber(randomNumber, 5, 500);
+        uint256 w = getRandomNumber(randomNumber, 6, 100);
+        uint256 h = getRandomNumber(randomNumber, 7, 100);
 
-        Character memory character = Character(
-            strength,
-            dexterity,
-            constitution,
-            intelligence,
-            wisdom,
-            charisma,
-            experience,
-            requestToCharacterName[requestId]
+        Elliptical memory elliptical = Elliptical(
+            requestToEllipticalName[requestId],
+            v1,
+            v2,
+            v3,
+            alpha,
+            x,
+            y,
+            w,
+            h
         );
 
-        characters.push(character);
+        ellipticals.push(elliptical);
+
         _safeMint(requestToSender[requestId], id);
     }
 
@@ -111,47 +113,25 @@ contract EllipticalArtNFT is ERC721URIStorage, VRFConsumerBase, Ownable {
         return ellipticals.length;
     }
 
-    function getEllipticalOverView(uint256 tokenId)
-        public
-        view
-        returns (
-            string memory,
-            uint256,
-            uint256,
-            uint256
-        )
-    {
-        return (
-            characters[tokenId].name,
-            uint256(characters[tokenId].strength) +
-                characters[tokenId].dexterity +
-                characters[tokenId].constitution +
-                characters[tokenId].intelligence +
-                characters[tokenId].wisdom +
-                characters[tokenId].charisma,
-            getLevel(tokenId),
-            characters[tokenId].experience
-        );
-    }
-
     function getLatestPrice() public view returns (int256) {
         (, int256 price, , , ) = priceFeed.latestRoundData();
         return price;
     }
 
-    function getRandomNumber(uint256 _randomNumber, uint256 _nonce)
-        private
-        pure
-        returns (uint256)
-    {
-        return uint256(keccak256(abi.encode(_randomNumber, _nonce))) % 100;
+    function getRandomNumber(
+        uint256 _randomNumber,
+        uint256 _nonce,
+        uint256 _range
+    ) private pure returns (uint256) {
+        return uint256(keccak256(abi.encode(_randomNumber, _nonce))) % _range;
     }
 
-    function getCharacterStats(uint256 tokenId)
+    function getEllipticalDimensions(uint256 _tokenId)
         public
         view
         returns (
-            int256,
+            uint256,
+            uint256,
             uint256,
             uint256,
             uint256,
@@ -160,14 +140,16 @@ contract EllipticalArtNFT is ERC721URIStorage, VRFConsumerBase, Ownable {
             uint256
         )
     {
+        Elliptical memory elliptical = ellipticals[_tokenId];
         return (
-            characters[tokenId].strength,
-            characters[tokenId].dexterity,
-            characters[tokenId].constitution,
-            characters[tokenId].intelligence,
-            characters[tokenId].wisdom,
-            characters[tokenId].charisma,
-            characters[tokenId].experience
+            elliptical.v1,
+            elliptical.v2,
+            elliptical.v3,
+            elliptical.alpha,
+            elliptical.x,
+            elliptical.y,
+            elliptical.w,
+            elliptical.h
         );
     }
 }

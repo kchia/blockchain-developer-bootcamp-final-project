@@ -21,6 +21,7 @@ export default function Elliptical({
 
   function draw(p5) {
     p5.noStroke();
+    console.log(p5.windowHeight, p5.windowWidth);
     for (let i = 0; i < ellipticalCount; i++) {
       p5.fill(
         v1 || p5.random(255),

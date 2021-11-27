@@ -1,81 +1,80 @@
 const EllipticalArtNFT = artifacts.require("EllipticalArtNFT");
 const fs = require("fs");
 
-const metadataTemple = {
-  name: "",
-  description: "asdf",
-  image: "",
-  attributes: [
-    {
-      trait_type: "Strength",
-      value: 0,
-    },
-    {
-      trait_type: "Dexterity",
-      value: 0,
-    },
-    {
-      trait_type: "Constitution",
-      value: 0,
-    },
-    {
-      trait_type: "Intelligence",
-      value: 0,
-    },
-    {
-      trait_type: "Wisdom",
-      value: 0,
-    },
-    {
-      trait_type: "Charisma",
-      value: 0,
-    },
-    {
-      trait_type: "Experience",
-      value: 0,
-    },
-  ],
-};
+async function createMetadata(callback) {
+  const contract = await EllipticalArtNFT.deployed();
+  const length = await contract.getEllipticalsCount();
 
-module.exports = async (callback) => {
-  const dnd = await EllipticalArtNFT.deployed();
-  const length = await dnd.getNumberOfCharacters();
-  let index = 0;
-  while (index < length) {
+  for (let index = 0; index < length; index++) {
     console.log(
-      "Let's get the overview of your character " + index + " of " + length
+      `Let's get the overview of your elliptical ${index} of ${length}`
     );
-    let characterMetadata = metadataTemple;
-    let characterOverview = await dnd.characters(index);
-    index++;
-    characterMetadata["name"] = characterOverview["name"];
+    const elliptical = await contract.ellipticals(index);
+    const ellipticalMetadata = {
+      name: elliptical.name,
+      description: "",
+      image: "",
+    };
+
     if (
       fs.existsSync(
-        "metadata/" +
-          characterMetadata["name"].toLowerCase().replace(/\s/g, "-") +
-          ".json"
+        `metadata/${ellipticalMetadata.name
+          .toLowerCase()
+          .replace(/\s/g, "-")}.json`
       )
     ) {
       console.log("test");
       continue;
     }
-    characterMetadata["attributes"][0]["value"] =
-      characterOverview["strength"]["words"][0];
-    characterMetadata["attributes"][1]["value"] =
-      characterOverview["dexterity"]["words"][0];
-    characterMetadata["attributes"][2]["value"] =
-      characterOverview["constitution"]["words"][0];
-    characterMetadata["attributes"][3]["value"] =
-      characterOverview["intelligence"]["words"][0];
-    characterMetadata["attributes"][4]["value"] =
-      characterOverview["wisdom"]["words"][0];
-    characterMetadata["attributes"][5]["value"] =
-      characterOverview["charisma"]["words"][0];
 
-    let filename =
-      "metadata/" + characterMetadata["name"].toLowerCase().replace(/\s/g, "-");
-    let data = JSON.stringify(characterMetadata);
-    fs.writeFileSync(filename + ".json", data);
+    const {
+      v1: {
+        words: [v1],
+      },
+      v2: {
+        words: [v2],
+      },
+      v3: {
+        words: [v3],
+      },
+      alpha: {
+        words: [alpha],
+      },
+      x: {
+        words: [x],
+      },
+      y: {
+        words: [y],
+      },
+      w: {
+        words: [w],
+      },
+      h: {
+        words: [h],
+      },
+    } = elliptical;
+
+    ellipticalMetadata.attributes = [
+      { trait_type: "v1", value: v1 },
+      { trait_type: "v2", value: v2 },
+      { trait_type: "v3", value: v3 },
+      { trait_type: "alpha", value: alpha },
+      { trait_type: "x", value: x },
+      { trait_type: "y", value: y },
+      { trait_type: "w", value: w },
+      { trait_type: "h", value: h },
+    ];
+
+    fs.writeFileSync(
+      `metadata/${ellipticalMetadata.name
+        .toLowerCase()
+        .replace(/\s/g, "-")}.json`,
+      JSON.stringify(ellipticalMetadata)
+    );
   }
-  callback(dnd);
+  callback(contract);
+}
+
+module.exports = (callback) => {
+  createMetadata(callback);
 };

@@ -22,7 +22,7 @@ async function updateMetadataImage(metadata) {
   return metadata;
 }
 
-async function main() {
+async function filecoinDeploy(callback) {
   const files = fs.readdirSync(
     "/Users/houchia/consensys/blockchain-developer-bootcamp-final-project/contracts/metadata"
   );
@@ -40,8 +40,10 @@ async function main() {
   const metadata = characters.map(async (json) => await client.store(json));
 
   metadata.forEach((nft) => nft.then(console.log));
+
+  callback();
 }
 
 module.exports = async (callback) => {
-  main();
+  filecoinDeploy(callback);
 };

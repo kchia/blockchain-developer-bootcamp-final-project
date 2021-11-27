@@ -1,28 +1,28 @@
 const EllipticalArtNFT = artifacts.require("EllipticalArtNFT");
 
-module.exports = async (callback) => {
+async function setTokenURI(urls, callback) {
   try {
-    const dnd = await EllipticalArtNFT.deployed();
+    const contract = await EllipticalArtNFT.deployed();
     console.log("Let's set the tokenURI of your characters");
-    const tx = await dnd.setTokenURI(
-      0,
-      "https://ipfs.io/ipfs/bafyreifm7dcq7qs77cf5metrny6vicyzht54u6tmnnjhqecgnzk5yh2rmu/metadata.json"
+    const transactions = urls.map(
+      async (url, index) => await contract.setTokenURI(index, url)
     );
-    const tx1 = await dnd.setTokenURI(
-      1,
-      "https://ipfs.io/ipfs/bafyreib6wh3xwndenk4zcsq4n27jwebhfe3blmgfmwxyxp2ucksszowxyq/metadata.json"
-    );
-    const tx2 = await dnd.setTokenURI(
-      2,
-      "https://ipfs.io/ipfs/bafyreihtsgfkcfpqlew7ui3g52fsgbdlcgzt56w4g67varjc4nnoyeif7a/metadata.json"
-    );
-    const tx3 = await dnd.setTokenURI(
-      3,
-      "https://ipfs.io/ipfs/bafyreie3hsnq2citifgiri4f5j33l5eb5eitkjwco6pqklfgbbms63m2h4/metadata.json"
-    );
-    console.log(tx);
-    callback(tx.tx);
+    await Promise.all(transactions);
+    transactions.forEach((tx) => console.log(tx.tx));
+    callback(transactions);
   } catch (error) {
     callback(error);
   }
+}
+
+module.exports = async (callback) => {
+  setTokenURI(
+    [
+      "https://ipfs.io/ipfs/bafyreifm7dcq7qs77cf5metrny6vicyzht54u6tmnnjhqecgnzk5yh2rmu/metadata.json",
+      "https://ipfs.io/ipfs/bafyreib6wh3xwndenk4zcsq4n27jwebhfe3blmgfmwxyxp2ucksszowxyq/metadata.json",
+      "https://ipfs.io/ipfs/bafyreihtsgfkcfpqlew7ui3g52fsgbdlcgzt56w4g67varjc4nnoyeif7a/metadata.json",
+      "https://ipfs.io/ipfs/bafyreie3hsnq2citifgiri4f5j33l5eb5eitkjwco6pqklfgbbms63m2h4/metadata.json",
+    ],
+    callback
+  );
 };
