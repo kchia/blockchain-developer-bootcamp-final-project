@@ -1,101 +1,105 @@
-// const ContractTemplate = artifacts.require("ContractTemplate"); // get the contract abstraction
-
-/*
- * uncomment accounts to access the test accounts made available by the
- * Ethereum client
- * See docs: https://www.trufflesuite.com/docs/truffle/testing/writing-tests-in-javascript
- */
-
-// contract() extends Mocha's describe() by providing a list of accounts for testing
-// contract("ContractTemplate", function (accounts) {
-//   it("should assert true", async function () {
-//     await ContractTemplate.deployed();
-//     return assert.isTrue(true);
-//   });
-// });
-
-// Have at least five smart contract unit tests that pass?
-
-const CryptoZombies = artifacts.require("CryptoZombies");
+const EllipticalArtNFT = artifacts.require("EllipticalArtNFT");
 const utils = require("./helpers/utils");
 const time = require("./helpers/time");
-//TODO: import expect into our project
-const zombieNames = ["Zombie 1", "Zombie 2"];
-contract("CryptoZombies", (accounts) => {
+
+const ellipticalArtNames = ["Elliptical 1", "Elliptical 2"];
+
+contract("EllipticalArtNFT", (accounts) => {
   let [alice, bob] = accounts;
   let contractInstance;
   beforeEach(async () => {
-    contractInstance = await CryptoZombies.new();
+    contractInstance = await EllipticalArtNFT.new();
   });
-  it("should be able to create a new zombie", async () => {
-    const result = await contractInstance.createRandomZombie(zombieNames[0], {
-      from: alice,
-    });
-    //TODO: replace with expect
+
+  it("should be able to create a new elliptical", async () => {
+    const result = await contractInstance.requestNewRandomElliptical(
+      ellipticalArtNames[0],
+      {
+        from: alice,
+      }
+    );
+
     assert.equal(result.receipt.status, true);
-    assert.equal(result.logs[0].args.name, zombieNames[0]);
+    assert.equal(result.logs[0].args.name, ellipticalArtNames[0]);
   });
-  it("should not allow two zombies", async () => {
-    await contractInstance.createRandomZombie(zombieNames[0], { from: alice });
+
+  it("should not allow more than one elliptical minted per address within a 24 hour period", async () => {
+    await contractInstance.requestNewRandomElliptical(ellipticalArtNames[0], {
+      from: bob,
+    });
+
     await utils.shouldThrow(
-      contractInstance.createRandomZombie(zombieNames[1], { from: alice })
+      contractInstance.requestNewRandomElliptical(ellipticalArtNames[1], {
+        from: bob,
+      })
     );
   });
+
+  it("should not allow more than two ellipticals minted per address in total", async () => {
+    await contractInstance.requestNewRandomElliptical(ellipticalArtNames[0], {
+      from: alice,
+    });
+
+    await time.increase(time.duration.days(2));
+
+    await contractInstance.requestNewRandomElliptical(ellipticalArtNames[0], {
+      from: alice,
+    });
+
+    await utils.shouldThrow(
+      contractInstance.requestNewRandomElliptical(ellipticalArtNames[1], {
+        from: alice,
+      })
+    );
+  });
+
   context("with the single-step transfer scenario", async () => {
-    it("should transfer a zombie", async () => {
-      const result = await contractInstance.createRandomZombie(zombieNames[0], {
+    it("should transfer an elliptical", async () => {
+      const result = await contractInstance.requestNewRandomElliptical(
+        ellipticalArtNames[0],
+        {
+          from: alice,
+        }
+      );
+      const ellipticalId = result.logs[0].args.id.toNumber();
+      await contractInstance.transferFrom(alice, bob, ellipticalId, {
         from: alice,
       });
-      const zombieId = result.logs[0].args.zombieId.toNumber();
-      await contractInstance.transferFrom(alice, bob, zombieId, {
-        from: alice,
-      });
-      const newOwner = await contractInstance.ownerOf(zombieId);
-      //TODO: replace with expect
+      const newOwner = await contractInstance.ownerOf(ellipticalId);
       assert.equal(newOwner, bob);
     });
   });
   context("with the two-step transfer scenario", async () => {
-    it("should approve and then transfer a zombie when the approved address calls transferFrom", async () => {
-      const result = await contractInstance.createRandomZombie(zombieNames[0], {
-        from: alice,
+    it("should approve and then transfer an elliptical when the approved address calls transferFrom", async () => {
+      const result = await contractInstance.requestNewRandomElliptical(
+        ellipticalArtNames[0],
+        {
+          from: alice,
+        }
+      );
+      const ellipticalId = result.logs[0].args.id.toNumber();
+      await contractInstance.approve(bob, ellipticalId, { from: alice });
+      await contractInstance.transferFrom(alice, bob, ellipticalId, {
+        from: bob,
       });
-      const zombieId = result.logs[0].args.zombieId.toNumber();
-      await contractInstance.approve(bob, zombieId, { from: alice });
-      await contractInstance.transferFrom(alice, bob, zombieId, { from: bob });
-      const newOwner = await contractInstance.ownerOf(zombieId);
-      //TODO: replace with expect
+      const newOwner = await contractInstance.ownerOf(ellipticalId);
+
       assert.equal(newOwner, bob);
     });
-    it("should approve and then transfer a zombie when the owner calls transferFrom", async () => {
-      const result = await contractInstance.createRandomZombie(zombieNames[0], {
+    it("should approve and then transfer an elliptical when the owner calls transferFrom", async () => {
+      const result = await contractInstance.requestNewRandomElliptical(
+        ellipticalArtNames[0],
+        {
+          from: alice,
+        }
+      );
+      const ellipticalId = result.logs[0].args.id.toNumber();
+      await contractInstance.approve(bob, ellipticalId, { from: alice });
+      await contractInstance.transferFrom(alice, bob, ellipticalId, {
         from: alice,
       });
-      const zombieId = result.logs[0].args.zombieId.toNumber();
-      await contractInstance.approve(bob, zombieId, { from: alice });
-      await contractInstance.transferFrom(alice, bob, zombieId, {
-        from: alice,
-      });
-      const newOwner = await contractInstance.ownerOf(zombieId);
-      //TODO: replace with expect
+      const newOwner = await contractInstance.ownerOf(ellipticalId);
       assert.equal(newOwner, bob);
     });
-  });
-  it("zombies should be able to attack another zombie", async () => {
-    let result;
-    result = await contractInstance.createRandomZombie(zombieNames[0], {
-      from: alice,
-    });
-    const firstZombieId = result.logs[0].args.zombieId.toNumber();
-    result = await contractInstance.createRandomZombie(zombieNames[1], {
-      from: bob,
-    });
-    const secondZombieId = result.logs[0].args.zombieId.toNumber();
-    await time.increase(time.duration.days(1));
-    await contractInstance.attack(firstZombieId, secondZombieId, {
-      from: alice,
-    });
-    //TODO: replace with expect
-    assert.equal(result.receipt.status, true);
   });
 });
