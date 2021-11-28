@@ -1,19 +1,12 @@
 import Sketch from "react-p5";
-
+import styles from "./view.module.css";
 export default function EllipticalView({
   drawRecursively = false,
   ellipticalCount = 1000,
   canvasWidth = 500,
   canvasHeight = 500,
   frameRate = 2,
-  v1,
-  v2,
-  v3,
-  alpha,
-  x,
-  y,
-  w,
-  h,
+  elliptical: { name, v1, v2, v3, alpha, x, y, w, h } = {},
 }) {
   function setup(p5, canvasParentRef) {
     p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
@@ -21,8 +14,18 @@ export default function EllipticalView({
     if (!drawRecursively) {
       p5.noStroke();
       for (let i = 0; i < ellipticalCount; i++) {
-        p5.fill(v1, v2, v3, alpha);
-        p5.ellipse(x, y, w, h);
+        p5.fill(
+          generateRandomNumber(v1, p5.random(255)),
+          generateRandomNumber(v2, p5.random(255)),
+          generateRandomNumber(v3, p5.random(255)),
+          generateRandomNumber(alpha, p5.random(255))
+        );
+        p5.ellipse(
+          generateRandomNumber(x, p5.random(p5.windowWidth), p5.windowWidth),
+          generateRandomNumber(y, p5.random(p5.windowHeight), p5.windowHeight),
+          generateRandomNumber(w, p5.random(100), 100),
+          generateRandomNumber(h, p5.random(100), 100)
+        );
       }
     }
   }
@@ -40,9 +43,20 @@ export default function EllipticalView({
     }
   }
 
+  function generateRandomNumber(
+    contractRandomNumber,
+    p5RandomNumber,
+    range = 255
+  ) {
+    return (contractRandomNumber * p5RandomNumber) % range;
+  }
+
   return drawRecursively ? (
     <Sketch setup={setup} draw={draw} />
   ) : (
-    <Sketch setup={setup} />
+    <div className={styles.container}>
+      <h2>{name} =></h2>
+      <Sketch setup={setup} />
+    </div>
   );
 }

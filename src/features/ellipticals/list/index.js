@@ -12,7 +12,9 @@ import {
   selectFetchEllipticalsStatus,
 } from "../ellipticals.slice";
 
-import Elliptical from "../view";
+import EllipticalView from "../view";
+
+import styles from "./list.module.css";
 
 export default function EllipticalsList() {
   const ellipticals = useSelector(selectAllEllipticals);
@@ -31,7 +33,7 @@ export default function EllipticalsList() {
         handleError(error);
       }
     })();
-  }, [contract, dispatch, handleError]);
+  }, []);
 
   const content =
     fetchEllipticalsStatus === STATUS.loading ? (
@@ -39,13 +41,13 @@ export default function EllipticalsList() {
     ) : (
       ellipticals.map((elliptical, index) => (
         <li key={index}>
-          <Elliptical elliptical={elliptical} />
+          <EllipticalView elliptical={elliptical} />
         </li>
       ))
     );
   return (
     <section>
-      <ul>{content}</ul>
+      <ul className={styles.list}>{content}</ul>
     </section>
   );
 }

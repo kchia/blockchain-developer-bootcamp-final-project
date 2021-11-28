@@ -40,7 +40,7 @@ export default function EllipticalsPage() {
         handleError(error);
       }
     })();
-  }, [contract, dispatch, handleError]);
+  }, []);
 
   const content =
     fetchEllipticalsCountStatus === STATUS.loading ? (

@@ -38,7 +38,6 @@ export default function MintEllipticalArtForm({
     event.preventDefault();
     if (library) {
       const signer = library.getSigner();
-
       if (signer) {
         try {
           await dispatch(

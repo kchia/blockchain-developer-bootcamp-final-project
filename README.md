@@ -95,7 +95,7 @@ Merging code into `main` automatically kicks off the deployment to Heroku.
 - In your terminal, run `ganache-cli -p 7545` to start an Ethereum blockchain at port `7545`.
 - Run `truffle compile` to create the build artifacts directory, which contain the bytecodes version of the smart contracts, ABIs, etc.
 - Run `truffle test` to execute the unit tests for the smart contracts.
-- Run `truffle migrate --network rinkeby` to deploy the smart contracts to the Rinkeby network.
+- Run `truffle migrate --reset --network rinkeby` to deploy the smart contracts to the Rinkeby network.
 ### Directory Structure
 
 - `/.github/workflows`: contains the configuration files for building and deploying the app automatically

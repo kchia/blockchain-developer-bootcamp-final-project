@@ -1,12 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { formatEther } from "@ethersproject/units";
 import { STATUS } from "../../common/constants";
 
 const fetchEthBalance = createAsyncThunk(
   "auth/ethBalanceFetched",
-  ({ library, active, account }, { getState }) => {
+  async ({ library, active, account }, { getState }) => {
     const { status } = getState().auth;
     if (status !== STATUS.loading) return;
-    return library.getBalance(account);
+    return parseFloat(
+      formatEther(await library.getBalance(account))
+    ).toPrecision(4);
   }
 );
 

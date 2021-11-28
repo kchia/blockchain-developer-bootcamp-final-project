@@ -1,4 +1,5 @@
 import { useErrorHandler } from "react-error-boundary";
+import { useHistory } from "react-router-dom";
 import { formatEther } from "@ethersproject/units";
 
 import { STATUS } from "../../common/constants";
@@ -20,6 +21,7 @@ export default function Auth() {
   } = useEth();
 
   const handleError = useErrorHandler();
+  const history = useHistory();
 
   async function handleConnectButtonClick() {
     if (!window.ethereum) {
@@ -47,6 +49,7 @@ export default function Auth() {
   async function handleLogoutButtonClick() {
     try {
       await deactivate();
+      history.push("/");
     } catch (error) {
       handleError(new Error("Sorry, we're having trouble logging out."));
     }

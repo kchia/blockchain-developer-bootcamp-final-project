@@ -3,7 +3,7 @@ pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+import "@chainlink/contracts/src/v0.8/dev/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
@@ -92,7 +92,7 @@ contract EllipticalArtNFT is
 
     modifier requireIsBelowMaxSupply() {
         require(
-            getEllipticalsCount() == maxSupply,
+            getEllipticalsCount() < maxSupply,
             "No more ellipticals can be minted!"
         );
         _;
@@ -177,14 +177,14 @@ contract EllipticalArtNFT is
         override
     {
         uint256 id = ellipticals.length;
-        uint256 v1 = uint256(_getLatestPrice()) % 255;
-        uint256 v2 = _getRandomNumber(_randomNumber, 1, 255);
-        uint256 v3 = _getRandomNumber(_randomNumber, 2, 255);
-        uint256 alpha = _getRandomNumber(_randomNumber, 3, 255);
-        uint256 x = _getRandomNumber(_randomNumber, 4, 500);
-        uint256 y = _getRandomNumber(_randomNumber, 5, 500);
-        uint256 w = _getRandomNumber(_randomNumber, 6, 100);
-        uint256 h = _getRandomNumber(_randomNumber, 7, 100);
+        uint256 v1 = uint256(_getLatestPrice());
+        uint256 v2 = _getRandomNumber(_randomNumber, 1);
+        uint256 v3 = _getRandomNumber(_randomNumber, 2);
+        uint256 alpha = _getRandomNumber(_randomNumber, 3);
+        uint256 x = _getRandomNumber(_randomNumber, 4);
+        uint256 y = _getRandomNumber(_randomNumber, 5);
+        uint256 w = _getRandomNumber(_randomNumber, 6);
+        uint256 h = _getRandomNumber(_randomNumber, 7);
 
         Elliptical memory elliptical = Elliptical(
             requestToEllipticalName[_requestId],
@@ -225,7 +225,8 @@ contract EllipticalArtNFT is
             uint256,
             uint256,
             uint256,
-            uint256
+            uint256,
+            string memory
         )
     {
         Elliptical memory elliptical = ellipticals[_tokenId];
@@ -237,7 +238,8 @@ contract EllipticalArtNFT is
             elliptical.x,
             elliptical.y,
             elliptical.w,
-            elliptical.h
+            elliptical.h,
+            elliptical.name
         );
     }
 
@@ -318,14 +320,13 @@ contract EllipticalArtNFT is
     /// @dev Feed in the Chainlink VRF random number
     /// @param _randomNumber random number
     /// @param _nonce nonce or seed
-    /// @param _range the returned value should be in the specified range
     /// @return a random number in a given range
-    function _getRandomNumber(
-        uint256 _randomNumber,
-        uint256 _nonce,
-        uint256 _range
-    ) private pure returns (uint256) {
-        return uint256(keccak256(abi.encode(_randomNumber, _nonce))) % _range;
+    function _getRandomNumber(uint256 _randomNumber, uint256 _nonce)
+        private
+        pure
+        returns (uint256)
+    {
+        return uint256(keccak256(abi.encode(_randomNumber, _nonce)));
     }
 
     /// @notice Trigger a cooldown period for each address after every mint

@@ -3,30 +3,48 @@ import { STATUS } from "../../common/constants";
 
 const fetchEllipticals = createAsyncThunk(
   "ellipticals/ellipticalsFetched",
-  (contract, { getState }) => {
+  async (contract, { getState }) => {
     const { fetchEllipticalsStatus } = getState().ellipticals;
     if (fetchEllipticalsStatus !== STATUS.loading) return;
-    return contract.Ellipticals();
+
+    const ellipticalsCount = await contract.getEllipticalsCount();
+
+    const ellipticals = [];
+    for (let index = 0; index < ellipticalsCount; index++) {
+      const { name, v1, v2, v3, alpha, x, y, w, h } =
+        await contract.ellipticals(index);
+
+      ellipticals.push({
+        name: name.toString(),
+        v1: parseInt(v1),
+        v2: parseInt(v2),
+        v3: parseInt(v3),
+        alpha: parseInt(alpha),
+        x: parseInt(x),
+        y: parseInt(y),
+        w: parseInt(w),
+        h: parseInt(h),
+      });
+    }
+    return ellipticals;
   }
 );
 
 const fetchEllipticalsCount = createAsyncThunk(
   "ellipticals/ellipticalsCountFetched",
-  (contract, { getState }) => {
+  async (contract, { getState }) => {
     const { fetchEllipticalsCountStatus } = getState().ellipticals;
     if (fetchEllipticalsCountStatus !== STATUS.loading) return;
-    return contract.getEllipticalsCount();
+    return parseInt(await contract.getEllipticalsCount());
   }
 );
 
 const mintRandomElliptical = createAsyncThunk(
-  "ellipticals/randomEllipticalMinted",
+  "ellipticals/ellipticalMinted",
   ({ contract, signer, name, description, image }, { getState }) => {
     const { mintRandomEllipticalStatus } = getState().ellipticals;
     if (mintRandomEllipticalStatus !== STATUS.loading) return;
-    return contract
-      .connect(signer)
-      .requestNewRandomElliptical(name, description, image);
+    return contract.connect(signer).requestNewRandomElliptical(name);
   }
 );
 
@@ -74,7 +92,7 @@ const ellipticalsSlice = createSlice({
       .addCase(fetchEllipticalsCount.fulfilled, (state, { payload }) => {
         if (state.fetchEllipticalsCountStatus === STATUS.loading) {
           state.fetchEllipticalsCountStatus = STATUS.idle;
-          state.ellipticalsCount = payload.toNumber();
+          state.ellipticalsCount = payload;
         }
       })
       .addCase(
@@ -88,12 +106,12 @@ const ellipticalsSlice = createSlice({
       )
       .addCase(mintRandomElliptical.pending, (state, action) => {
         if (state.mintRandomEllipticalStatus === STATUS.idle) {
-          state.mintRandomEllipticalstatus = STATUS.loading;
+          state.mintRandomEllipticalStatus = STATUS.loading;
         }
       })
       .addCase(mintRandomElliptical.fulfilled, (state, { payload }) => {
         if (state.mintRandomEllipticalStatus === STATUS.loading) {
-          state.mintRandomEllipticalstatus = STATUS.idle;
+          state.mintRandomEllipticalStatus = STATUS.idle;
           state.ellipticals = state.ellipticals.concat(payload);
         }
       })
@@ -110,8 +128,8 @@ const ellipticalsSlice = createSlice({
 });
 
 const selectAllEllipticals = ({ ellipticals: { ellipticals } }) => ellipticals;
-const selectEllipticalsCount = ({ ellipticals: { ellipticals } }) =>
-  ellipticals;
+const selectEllipticalsCount = ({ ellipticals: { ellipticalsCount } }) =>
+  ellipticalsCount;
 const selectFetchEllipticalsStatus = ({
   ellipticals: { fetchEllipticalsStatus },
 }) => fetchEllipticalsStatus;
