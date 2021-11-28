@@ -50,6 +50,7 @@ contract EllipticalArtNFT is
 
     struct Elliptical {
         string name;
+        string description;
         uint256 v1;
         uint256 v2;
         uint256 v3;
@@ -63,6 +64,7 @@ contract EllipticalArtNFT is
     Elliptical[] public ellipticals;
 
     mapping(bytes32 => string) public requestToEllipticalName;
+    mapping(bytes32 => string) public requestToEllipticalDescription;
     mapping(bytes32 => address) public requestToSender;
     mapping(bytes32 => uint256) requestToTokenId;
     mapping(address => uint32) addressToReadyTime;
@@ -135,8 +137,12 @@ contract EllipticalArtNFT is
     /// @notice Request a new elliptical
     /// @dev requestRandomness() makes a request to the Chainlink oracle for a verifiably random number
     /// @param _name a name for the elliptical
+    /// @param _description a description for the elliptical
     /// @return request id associated with the VRF request
-    function requestNewRandomElliptical(string memory _name)
+    function requestNewRandomElliptical(
+        string memory _name,
+        string memory _description
+    )
         public
         requireSufficientLink
         requireIsBelowMaxSupply
@@ -146,6 +152,7 @@ contract EllipticalArtNFT is
     {
         bytes32 requestId = requestRandomness(keyHash, fee);
         requestToEllipticalName[requestId] = _name;
+        requestToEllipticalDescription[requestId] = _description;
         requestToSender[requestId] = _msgSender();
         emit RequestedElliptical(requestId);
         return requestId;
@@ -188,6 +195,7 @@ contract EllipticalArtNFT is
 
         Elliptical memory elliptical = Elliptical(
             requestToEllipticalName[_requestId],
+            requestToEllipticalDescription[_requestId],
             v1,
             v2,
             v3,
@@ -209,38 +217,6 @@ contract EllipticalArtNFT is
     /// @return count of ellipticals
     function getEllipticalsCount() public view returns (uint256) {
         return ellipticals.length;
-    }
-
-    /// @notice Get the attributes for an elliptical image
-    /// @param _tokenId token id for the desired elliptical
-    /// @return attributes of the elliptical image
-    function getEllipticalDimensions(uint256 _tokenId)
-        public
-        view
-        returns (
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            string memory
-        )
-    {
-        Elliptical memory elliptical = ellipticals[_tokenId];
-        return (
-            elliptical.v1,
-            elliptical.v2,
-            elliptical.v3,
-            elliptical.alpha,
-            elliptical.x,
-            elliptical.y,
-            elliptical.w,
-            elliptical.h,
-            elliptical.name
-        );
     }
 
     /// @notice Transfer a token from one address to another

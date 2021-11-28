@@ -6,7 +6,7 @@ export default function EllipticalView({
   canvasWidth = 500,
   canvasHeight = 500,
   frameRate = 2,
-  elliptical: { name, v1, v2, v3, alpha, x, y, w, h } = {},
+  elliptical: { name, description, v1, v2, v3, alpha, x, y, w, h } = {},
 }) {
   function setup(p5, canvasParentRef) {
     p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
@@ -27,6 +27,8 @@ export default function EllipticalView({
           generateRandomNumber(h, p5.random(100), 100)
         );
       }
+
+      p5.save(`${name}.png`);
     }
   }
 
@@ -56,6 +58,7 @@ export default function EllipticalView({
   ) : (
     <div className={styles.container}>
       <h2>{name} =></h2>
+      <p>{description}</p>
       <Sketch setup={setup} />
     </div>
   );

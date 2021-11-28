@@ -41,14 +41,19 @@ const fetchEllipticalsCount = createAsyncThunk(
 
 const mintRandomElliptical = createAsyncThunk(
   "ellipticals/ellipticalMinted",
-  ({ contract, signer, name, description, image }, { getState }) => {
+  async ({ contract, signer, name, description }, { getState }) => {
     const { mintRandomEllipticalStatus } = getState().ellipticals;
     if (mintRandomEllipticalStatus !== STATUS.loading) return;
-    return contract.connect(signer).requestNewRandomElliptical(name);
+    const { id } = await contract
+      .connect(signer)
+      .requestNewRandomElliptical(name, description);
+
+    return contract.ellipticals(id);
   }
 );
 
 const initialState = {
+  elliptical: {},
   ellipticals: [],
   ellipticalsCount: 0,
   error: null,
@@ -112,6 +117,7 @@ const ellipticalsSlice = createSlice({
       .addCase(mintRandomElliptical.fulfilled, (state, { payload }) => {
         if (state.mintRandomEllipticalStatus === STATUS.loading) {
           state.mintRandomEllipticalStatus = STATUS.idle;
+          state.elliptical = payload;
           state.ellipticals = state.ellipticals.concat(payload);
         }
       })
@@ -128,6 +134,7 @@ const ellipticalsSlice = createSlice({
 });
 
 const selectAllEllipticals = ({ ellipticals: { ellipticals } }) => ellipticals;
+const selectElliptical = ({ ellipticals: { elliptical } }) => elliptical;
 const selectEllipticalsCount = ({ ellipticals: { ellipticalsCount } }) =>
   ellipticalsCount;
 const selectFetchEllipticalsStatus = ({
@@ -150,6 +157,7 @@ export {
   mintRandomElliptical,
   selectMintRandomEllipticalStatus,
   selectAllEllipticals,
+  selectElliptical,
   selectEllipticalsCount,
   selectFetchEllipticalsStatus,
   selectFetchEllipticalsCountStatus,

@@ -7,27 +7,11 @@ async function createMetadata(callback) {
 
   for (let index = 0; index < length; index++) {
     console.log(
-      `Let's get the overview of your elliptical ${index} of ${length}`
+      `Let's create the metadata for elliptical ${index} of ${length}`
     );
-    const elliptical = await contract.ellipticals(index);
-    const ellipticalMetadata = {
-      name: elliptical.name,
-      description: "",
-      image: "",
-    };
-
-    if (
-      fs.existsSync(
-        `metadata/${ellipticalMetadata.name
-          .toLowerCase()
-          .replace(/\s/g, "-")}.json`
-      )
-    ) {
-      console.log("test");
-      continue;
-    }
-
     const {
+      name,
+      description,
       v1: {
         words: [v1],
       },
@@ -52,7 +36,27 @@ async function createMetadata(callback) {
       h: {
         words: [h],
       },
-    } = elliptical;
+    } = await contract.ellipticals(index);
+
+    const ellipticalMetadata = {
+      name,
+      description,
+      image: "",
+    };
+
+    if (
+      fs.existsSync(
+        `metadata/${ellipticalMetadata.name
+          .toLowerCase()
+          .replace(/\s/g, "-")}.json`
+      )
+    ) {
+      fs.removeSync(
+        `metadata/${ellipticalMetadata.name
+          .toLowerCase()
+          .replace(/\s/g, "-")}.json`
+      );
+    }
 
     ellipticalMetadata.attributes = [
       { trait_type: "v1", value: v1 },

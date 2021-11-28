@@ -90,18 +90,6 @@ export default function MintEllipticalArtForm({
                 />
               </label>
             </li>
-            <li>
-              <label htmlFor="image">
-                Image:
-                <textarea
-                  id="image"
-                  name="image"
-                  onChange={handleChange}
-                  value={formData.image}
-                  required
-                />
-              </label>
-            </li>
           </ul>
           <Button text="mint an nft" handleClick={handleSubmit} />
         </form>
