@@ -20,7 +20,7 @@ export default function HomePage() {
     history.push("/ellipticals");
   }
 
-  const content = active && (
+  const content = active ? (
     <>
       <div className={styles.secondaryContainer}>
         <MintEllipticalArtForm setShowModal={setShowModal} />
@@ -37,12 +37,16 @@ export default function HomePage() {
         handleClose={handleSuccessModalClose}
       />
     </>
+  ) : (
+    <>
+      <EllipticalView drawRecursively />
+      <Auth />
+    </>
   );
 
   return (
     <section className={styles.container}>
       <h2>Create unique, one-of-a-kind elliptical art</h2>
-      <Auth />
       {content}
     </section>
   );

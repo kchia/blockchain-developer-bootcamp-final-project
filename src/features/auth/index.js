@@ -64,8 +64,8 @@ export default function Auth() {
       <Button text="connect to web3" handleClick={handleConnectButtonClick} />
     ) : (
       <>
-        <p>Connected:{shortenAddress(account)}</p>
-        <p>ETH balance:{balance}</p>
+        <p>Connected: {shortenAddress(account)}</p>
+        <p>ETH balance: {balance}</p>
         <Button text="log out" handleClick={handleLogoutButtonClick} />
       </>
     );
