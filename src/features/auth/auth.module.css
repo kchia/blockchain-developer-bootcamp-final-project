@@ -1,0 +1,11 @@
+.container {
+  padding: 20px;
+}
+
+.container p {
+  margin-bottom: 0;
+}
+
+.container button {
+  margin-top: 5px;
+}

@@ -20,14 +20,11 @@ import styles from "./ellipticals.module.css";
 
 export default function EllipticalsPage() {
   const ellipticalsCount = useSelector(selectEllipticalsCount);
-
   const fetchEllipticalsCountStatus = useSelector(
     selectFetchEllipticalsCountStatus
   );
-
   const dispatch = useDispatch();
   const handleError = useErrorHandler();
-
   const contract = useContract(NFT_CONTRACT_ADDRESS, ABI);
 
   useEffect(() => {

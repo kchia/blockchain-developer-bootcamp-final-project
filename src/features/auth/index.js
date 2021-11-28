@@ -8,6 +8,7 @@ import { useEth } from "../../common/hooks";
 import { shortenAddress } from "../../common/utils";
 
 import { injected } from "./auth.connectors";
+import styles from "./auth.module.css";
 
 export default function Auth() {
   const {
@@ -73,5 +74,5 @@ export default function Auth() {
       </>
     );
 
-  return <section>{content}</section>;
+  return <section className={styles.container}>{content}</section>;
 }
