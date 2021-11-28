@@ -1,3 +1,7 @@
+.modalContainer div {
+  max-width: 530px;
+}
+
 .modalTitle,
 .modalBody {
   color: var(--black-primary);

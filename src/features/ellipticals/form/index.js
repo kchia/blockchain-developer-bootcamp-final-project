@@ -4,25 +4,26 @@ import { useErrorHandler } from "react-error-boundary";
 import { useSelector, useDispatch } from "react-redux";
 
 import ABI from "../../../abis/EllipticalArtNFTContract.abi.json";
-import { NFT_CONTRACT_ADDRESS } from "../../../common/constants";
-import { Button } from "../../../common/core";
+import { NFT_CONTRACT_ADDRESS, STATUS } from "../../../common/constants";
+import { Button, Loader } from "../../../common/core";
 import { useContract } from "../../../common/hooks";
 import {
   mintRandomElliptical,
   selectMintRandomEllipticalStatus,
 } from "../ellipticals.slice";
-import EllipticalView from "../view";
 
-export default function MintEllipticalArtForm() {
-  const [formData, setFormData] = useState({
+export default function MintEllipticalArtForm({
+  setShowModal,
+  initialFormData = {
     image: "",
     description: "",
     name: "",
-  });
-  const { txHash, setTxHash } = useState("");
+  },
+}) {
+  const [formData, setFormData] = useState({ ...initialFormData });
   const status = useSelector(selectMintRandomEllipticalStatus);
   const contract = useContract(NFT_CONTRACT_ADDRESS, ABI);
-  const { chainId, library } = useWeb3React();
+  const { library } = useWeb3React();
   const handleError = useErrorHandler();
   const dispatch = useDispatch();
 
@@ -48,67 +49,65 @@ export default function MintEllipticalArtForm() {
             })
           );
 
-          // if (chainId && tx) {
-          //   setTxHash(tx.hash);
-          // }
-
-          // await tx.wait();
-          // setTxHash(undefined);
+          setShowModal(true);
         } catch (error) {
           handleError(error);
         }
       }
     }
 
-    setFormData({ image: "", description: "", name: "" });
+    setFormData({ ...initialFormData });
   }
 
-  return (
-    <>
-      <EllipticalView />
-      <form onSubmit={handleSubmit}>
-        <ul>
-          <li>
-            <label htmlFor="name">
-              Name:
-              <input
-                id="name"
-                type="text"
-                name="name"
-                onChange={handleChange}
-                value={formData.name}
-                required
-              />
-            </label>
-          </li>
-          <li>
-            <label htmlFor="description">
-              Description:
-              <textarea
-                id="description"
-                name="description"
-                onChange={handleChange}
-                value={formData.description}
-                required
-              />
-            </label>
-          </li>
-          <li>
-            <label htmlFor="image">
-              Image:
-              <textarea
-                id="image"
-                name="image"
-                onChange={handleChange}
-                value={formData.image}
-                required
-              />
-            </label>
-          </li>
-        </ul>
-        <h2>{txHash}</h2>
-        <Button text="Mint an NFT" handleClick={handleSubmit} />
-      </form>
-    </>
-  );
+  const content =
+    status === STATUS.loading ? (
+      <Loader />
+    ) : (
+      <>
+        <form onSubmit={handleSubmit}>
+          <ul>
+            <li>
+              <label htmlFor="name">
+                Name:
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  onChange={handleChange}
+                  value={formData.name}
+                  required
+                />
+              </label>
+            </li>
+            <li>
+              <label htmlFor="description">
+                Description:
+                <textarea
+                  id="description"
+                  name="description"
+                  onChange={handleChange}
+                  value={formData.description}
+                  required
+                />
+              </label>
+            </li>
+            <li>
+              <label htmlFor="image">
+                Image:
+                <textarea
+                  id="image"
+                  name="image"
+                  onChange={handleChange}
+                  value={formData.image}
+                  required
+                />
+              </label>
+            </li>
+          </ul>
+          <Button text="mint an nft" handleClick={handleSubmit} />
+        </form>
+      </>
+    );
+
+  return <>{content}</>;
 }

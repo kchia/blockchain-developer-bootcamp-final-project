@@ -99,7 +99,7 @@ Merging code into `main` automatically kicks off the deployment to Heroku.
 ### Directory Structure
 
 - `/.github/workflows`: contains the configuration files for building and deploying the app automatically
-- `/eth-contracts`
+- `/contracts`
   - `/contracts`: contains smart contract code written in Solidity
     - `Migrations.sol`: A contract that keeps track of changes made to the code onchain to avoid duplicative deployment 
   - `/migrations`: contains the Truffle migration files that describe how to deploy the project's smart contracts

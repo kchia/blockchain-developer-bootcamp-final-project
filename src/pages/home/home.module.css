@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.secondaryContainer {
+  display: flex;
+  align-items: center;
+}
+
+.secondaryContainer ul {
+  list-style-type: none;
+}
