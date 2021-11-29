@@ -26,6 +26,10 @@ The frontend is deployed to Heroku, at [Heroku: Consensys Final Project](https:/
 
 The `EllipticalArtNFT` contract is currently deployed to the Rinkeby testnet, at `0xD196988e7f66faa9838598385C3668e622179b7c`.
 
+## Public Ethereum Address
+
+`0x85ea1f1BD413b9fd797B9128e4AA6f81A5300701`
+
 ## How to Use EllipticalArtNFT to Mint an NFT
 
 1. On the `/home` page, press the `CONNECT TO WEB3` button to connect to the app via MetaMask. Make sure to use the Rinkeby network. After connecting to MetaMask successfully, the connected account address and balance will be displayed in the page header. A form titled `Create unique, one-of-a-kind elliptical art` will also appear on the page, as follows:
@@ -168,7 +172,7 @@ The following principles were applied in the design of the folder structure:
 ## Next Steps
 
 - Use Chainlink keepers and external adapters to make the elliptical art NFTs truly dynamic that evolve with provably random attributes that change over
-- Set up Chainlink nodes on a local blockchain for development
+- Set up Chainlink nodes on a local blockchain for development. The majority of the tests are not working because testing Chainlink-powered smart contracts on rinkeby does not seem to be well-supported right now, and there's limited documentation on unit testing Chainlink-powered smart contracts with truffle. Hardhat seems to offer better support, so I might look into this option in the future. 
 - Build out a form that allows the user to submit the elliptical art image to be stored on Filecoin
 - Build out a basic backend (possibly using the `json-server` library already configured in the project) that can automatically handle the tasks in `./contracts/scripts` via a RESTful interface, such as creating the metadata for each NFT, setting the tokenURI for each NFT, and deploying the metadata automatically to nft.storage
 
