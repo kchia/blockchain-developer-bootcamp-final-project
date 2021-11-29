@@ -4,10 +4,13 @@ EllipticalArtNFT is a web3 app that allows users to mint ERC-721 non-fungible to
 
 ![Elliptical Art Example](./images/elliptical-art-example.png)
 
+Only 100 elliptical art NFTs can ever be minted, and each NFT is minted using "verifiable" randomness. Each wallet can mint only mint 1 elliptical art within a 24-hour period, and at most 2 ellliptical art NFTs.
 
 ## How EllipticalArtNFT Works
 
-A smart contract, `EllipticalArtNFT`, is responsible for creating random attributes that are used to generate the elliptical shapes on the frontend. Whenever a user mints a new elliptical art NFT, the contract makes a request for randomness to the [Chainlink Verifiable Random Function(VRF)](https://docs.chain.link/docs/chainlink-vrf/) using the `requestRandomness()` function inherited from the `VRFConsumerBase` contract. Then, whenever a provably random number is returned to the contract from the VRF Coordinator, the `fulfillRandomness()` function uses the random number to create attributes for the elliptical art, storing the attributes on-chain, and minting the token to the sender's address. One of the attributes is also generated using the [Chainlink `ETH-USD` price feed](https://data.chain.link/).
+Whenever a user mints a new elliptical art NFT, the user will have to pay only the gas fee for the transaction. 
+
+A smart contract, `EllipticalArtNFT`, is responsible for creating random attributes that are used to generate the elliptical shapes on the frontend.  To create a new ellptical NFT, the contract first makes a request for randomness to the [Chainlink Verifiable Random Function(VRF)](https://docs.chain.link/docs/chainlink-vrf/) using the `requestRandomness()` function inherited from the `VRFConsumerBase` contract. Then, whenever a provably random number is returned to the contract from the VRF Coordinator, the `fulfillRandomness()` function in the contract uses the number to create attributes for the elliptical art, which are stored on-chain, and finally the token is minted to the sender's address. One of the attributes is also generated using the [Chainlink `ETH-USD` price feed](https://data.chain.link/).
 
 The frontend, using the [p5.js](https://p5js.org/) library, then uses these randomly-generated attributes to render the elliptical art in the browser. 
 
@@ -25,7 +28,7 @@ The `EllipticalArtNFT` contract is currently deployed to the Rinkeby testnet, at
 
 ## How to Use EllipticalArtNFT to Mint an NFT
 
-1. On the `/home` page, press the `CONNECT TO WEB3` button to connect to the app via MetaMask. Make sure to use the Rinkeby network. After connecting to MetaMask successfully, the connected account address and balance will be displayed in page header. A form titled `Create unique, one-of-a-kind elliptical art` will also appear on the page, as follows:
+1. On the `/home` page, press the `CONNECT TO WEB3` button to connect to the app via MetaMask. Make sure to use the Rinkeby network. After connecting to MetaMask successfully, the connected account address and balance will be displayed in the page header. A form titled `Create unique, one-of-a-kind elliptical art` will also appear on the page, as follows:
 
 ![EllipticalArtNFT Home](./images/EllipticalArtNFT-home.png)
 
@@ -39,11 +42,20 @@ The `EllipticalArtNFT` contract is currently deployed to the Rinkeby testnet, at
 
 ![EllipticalArtNFT Ellipticals](./images/EllipticalArtNFT-ellipticals.png)
 
-## Decentralizing storage with `nft.storage`
+## How to Store Elliptical Art Images and Metadata on `nft.storage`
 
-decentralize storage. After rendering the image in the browser, a copy of the image is saved to the user's machine. Right now, these steps must be completed manually.
+Currently, the app does **not** store a copy of the generated art, but re-draws each elliptical art in the browser using randomly-generated attributes stored on-chain.
 
-`nft.storage` is built on top of Filecoin/IPFS
+For more technical users, you could store the NFT metadata on `nft.storage`, which is a decentralized storage built on top of Filecoin/IPFS that makes it easier and cheaper to store images and metadata for NFTs. You can run the following scripts with the `truffle exec {path/to/script} --network rinkeby` command:
+
+- `contracts/scripts/create-metadata.js`: creates the `.json` file containing the metadata for each elliptical art and stores the generated files at `contracts/metadata`
+- `contracts/scripts/filecoin-deploy.js`: iterates through the `/metadata` folder, storing the contents of each `.json` file on `nft.storage`
+- `contracts/scripts/set-token-uri.js`: sets the token URI of each elliptical art to an IPFS address that resolves to the elliptical art's metadata, including a link to the image
+
+As a next step for this project, additional UI elements and a simple RESTful API could be built out (possibly using the `json-server` library already configured in the project) to automatically handle these tasks.
+
+`contracts/scripts/generate-elliptical.js` creates new ellipticals, whereas `contracts/scripts/get-elliptical.js` retrieves an elliptical by its token id. These scripts are helpful for testing the smart contract without a frontend.
+
 ## `EllipticalArtNFT` User Stories
 
 - As a user, I want to login/connect to the app with my MetaMask wallet, so that I can mint elliptical NFTs as well as browse a list of all minted NFTs.
@@ -80,6 +92,17 @@ You will also see any lint errors in the console.
 ### CI/CD with Github Actions
 
 Merging code into the `main` automatically kicks off the deployment to Heroku. The build and deploy steps are automated using Github Actions, and can be found in `./github/workflows`.
+
+### Set up environment variables
+
+Within the `contracts/` folder, create a new `.env` file containing the following information:
+
+```
+MNEMONIC=asdf asdf asdf...
+RINKEBY_RPC_URL=asdf
+NFTSTORAGE_API_KEY=asdf
+```
+You will need to replace the values above with your own custom values. `NFTSTORAGE_API_KEY` is optional to set, unless you would like to store NFT metadata on `nft.storage`.
 
 ### Running a local Ganache blockchain
 

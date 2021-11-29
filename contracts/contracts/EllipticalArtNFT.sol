@@ -38,15 +38,15 @@ contract EllipticalArtNFT is
 
     /// @notice Cooldown period before an address can mint another elliptical
     /// @dev Used to ensure that no address can mint more than 1 elliptical within a day
-    uint256 cooldownTime = 1 days;
+    uint256 private cooldownTime = 1 days;
 
     /// @notice The maximum number of ellipticals that can be created per address
     /// @dev Used to ensure that no address can mint more than 2 ellipticals
-    uint8 maxPerAddress = 2;
+    uint8 private maxPerAddress = 2;
 
     /// @notice The maximum number of ellipticals that can be created on this contract
     /// @dev This value is set during contract initialization, and cannot be updated
-    uint8 maxSupply;
+    uint8 private maxSupply;
 
     struct Elliptical {
         string name;
@@ -66,10 +66,10 @@ contract EllipticalArtNFT is
     mapping(bytes32 => string) public requestToEllipticalName;
     mapping(bytes32 => string) public requestToEllipticalDescription;
     mapping(bytes32 => address) public requestToSender;
-    mapping(bytes32 => uint256) requestToTokenId;
-    mapping(address => uint32) addressToReadyTime;
-    mapping(address => uint8) addressEllipticalCount;
-    mapping(uint256 => address) ellipticalApprovals;
+    mapping(bytes32 => uint256) public requestToTokenId;
+    mapping(address => uint32) public addressToReadyTime;
+    mapping(address => uint8) public addressEllipticalCount;
+    mapping(uint256 => address) public ellipticalApprovals;
     mapping(uint256 => address) public ellipticalToOwner;
 
     /// @notice Emitted when a user requests a new elliptical

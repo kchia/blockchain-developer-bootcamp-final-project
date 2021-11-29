@@ -1,4 +1,7 @@
 const EllipticalArtNFT = artifacts.require("EllipticalArtNFT");
+const VRFCoordinatorMock = artifacts.require("VRFCoordinatorMock");
+const MockPriceFeed = artifacts.require("MockV3Aggregator");
+
 const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
 const RINKEBY_VRF_COORDINATOR = "0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B";
 const RINKEBY_LINKTOKEN = "0x01be23585060835e02b77ef475b0cc51aa1e0709";
@@ -19,10 +22,26 @@ module.exports = async (deployer, network, [defaultAccount]) => {
       RINKEBY_ETH_USD_PRICE_FEED,
       RINKEBY_MAX_SUPPLY
     );
-    await EllipticalArtNFT.deployed();
   } else {
     console.log(
-      "Right now only rinkeby works! Please change your network to Rinkeby"
+      "Running tests in development mode...mocking Chainlink VRF and price feed...."
+    );
+    let keyhash =
+      "0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4";
+    let link = await LinkToken.new({ from: defaultAccount });
+    let vrfCoordinatorMock = await VRFCoordinatorMock.new(link.address, {
+      from: defaultAccount,
+    });
+    let mockPriceFeed = await MockPriceFeed.new(8, "2000000000000000000");
+    await deployer.deploy(
+      EllipticalArtNFT,
+      vrfCoordinatorMock.address,
+      link.address,
+      keyhash,
+      mockPriceFeed.address,
+      RINKEBY_MAX_SUPPLY,
+      { from: defaultAccount }
     );
   }
+  await EllipticalArtNFT.deployed();
 };
