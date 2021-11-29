@@ -1,29 +1,19 @@
-# [Final Project]
+# EllipticalArtNFT
 
-[One-sentence description of final project]
-NFTs (Non-Fungible Tokens)
-each token is unique
-each NFT has its own characteristics
-ERC-721 is the most popular token standard
-list NFT on OpenSea on the rinkeby testnet
-Chainlink + NFTs = dynamic NFTs, more powerful version of NFTs
-provably random attributes that change over time
-NFT that changes prices of an asset
+EllipticalArtNFT is a web3 app that allows users to mint ERC-721 non-fungible tokens (NFTs) that each represents ownership of a unique and limited piece of generative art created from randomly-generated elliptical shapes. 
 
-NFT metadata - image and attributes are the metadata, which are expensive to store on-chain
-store data off-chain on a server but that's not decentralized.
-In comes Filecoin, store metadata in a decentralized manner.
-
-IPFS - Filecoin is built on top of IPFS
-IPFS does not guarantee data remain online but Filecoin does
-NFT.storage is what will be used.
+![Elliptical Art Example](./images/elliptical-art-example.png)
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How EllipticalArtNFT Works
+
+A smart contract, `EllipticalArtNFT`, is responsible for creating random attributes that are used to generate the elliptical shapes on the frontend. Whenever a user mints a new elliptical art NFT, the contract makes a request for randomness to the [Chainlink Verifiable Random Function(VRF)](https://docs.chain.link/docs/chainlink-vrf/) using the `requestRandomness()` function inherited from the `VRFConsumerBase` contract. Then, whenever a provably random number is returned to the contract from the VRF Coordinator, the `fulfillRandomness()` function uses the random number to create attributes for the elliptical art, storing the attributes on-chain, and minting the token to the sender's address. One of the attributes is also generated using the [Chainlink `ETH-USD` price feed](https://data.chain.link/).
+
+The frontend, using the [p5.js](https://p5js.org/) library, then uses these randomly-generated attributes to render the elliptical art in the browser. 
 
 ## Deployed Site URL
 
-[Heroku: Consensys Final Project](https://www.pacific-sea-29544.herokuapp.com)
+The frontend is deployed to Heroku, at [Heroku: Consensys Final Project](https://www.pacific-sea-29544.herokuapp.com).
 
 ## Screencast URL
 
@@ -31,43 +21,38 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## EllipticalArtNFT Contract Address
 
-0xD196988e7f66faa9838598385C3668e622179b7c
+The `EllipticalArtNFT` contract is currently deployed to the Rinkeby testnet, at `0xD196988e7f66faa9838598385C3668e622179b7c`.
 
-## Problem
+## How to Use EllipticalArtNFT to Mint an NFT
 
-[Describe Problem]
+1. On the `/home` page, press the `CONNECT TO WEB3` button to connect to the app via MetaMask. Make sure to use the Rinkeby network. After connecting to MetaMask successfully, the connected account address and balance will be displayed in page header. A form titled `Create unique, one-of-a-kind elliptical art` will also appear on the page, as follows:
 
-## Solution
+![EllipticalArtNFT Home](./images/EllipticalArtNFT-home.png)
 
-[Describe Solution]
+2. Enter a `name` and `description` for the elliptical art NFT you want to mint, then press the `MINT AN NFT` button. A MetaMask prompt will appear, asking you to confirm the gas fee for the transaction. Go ahead and press the `Confirm` button. 
+   
+3. It might take a few seconds for the transaction to be confirmed, so be patient. A modal will appear on the page, and it will give you a link to Ethernet so you can check on your transaction's progress.
 
-## How [Solution] Works
+![EllipticalArtNFT Confirm](./images/EllipticalArtNFT-confirm.png)
+  
+4. It may take a few minutes for the newly minted elliptical art piece to show up at the `/ellipticals` page, so try refreshing the page occasionally. 
 
-[Describe how Solution works]
+![EllipticalArtNFT Ellipticals](./images/EllipticalArtNFT-ellipticals.png)
 
-## How to Use [Solution]/Workflow
+## Decentralizing storage with `nft.storage`
 
-1. asdf
-2. asdf
-3. asdf
-4. asdf
+decentralize storage. After rendering the image in the browser, a copy of the image is saved to the user's machine. Right now, these steps must be completed manually.
 
-## User Stories
+`nft.storage` is built on top of Filecoin/IPFS
+## `EllipticalArtNFT` User Stories
 
-1. As a user, I want to login/connect with my MetaMask wallet, so that I can access the app.
-2. As a user, I want to ..., so that I can ...
-3. As a user, I want to ..., so that I can ..,
+- As a user, I want to login/connect to the app with my MetaMask wallet, so that I can mint elliptical NFTs as well as browse a list of all minted NFTs.
+- As a user, I want to mint an elliptical art NFT, so that I can own a unique and beautiful piece of digital asset.
+- As a user, I want to view a list of all minted elliptical art NFTs, so that I can enjoy viewing the NFTs minted by others.
 
-## Tech Stack
-
-### Chainlink VRF
-
-Make a dynamic NFT with provably random trait using the Chainlink VRF
-Connected to the Chainlink data feed
-### Filecoin
-
-The NFT is stored on Filecoin
 ## Installation
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 ### Prerequisites
 
 - MetaMask Wallet 
@@ -83,21 +68,26 @@ First, fork and then clone the project locally.
 
 In the project root, you can run `yarn install` to install the frontend and smart contract dependencies.
 
-Then run `yarn start`, which concurrently runs the app in the development mode, starts a REST API at `http://localhost:3004`, and populates the local blockchain with test data.\
+Then run `yarn start`, which concurrently runs the app in the development mode, starts a REST API at `http://localhost:3004` (not currently being used for anything), and connects the local app to the Rinkeby testnet.\
+
+**NOTE** Setting up a local blockchain with Chainlink price feeds and VRF coordinator involves a non-trivial amount of research and effort, so this project opts to connect directly to Rinkeby for development purposes.   
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-Merging code into `main` automatically kicks off the deployment to Heroku.
+### CI/CD with Github Actions
+
+Merging code into the `main` automatically kicks off the deployment to Heroku. The build and deploy steps are automated using Github Actions, and can be found in `./github/workflows`.
 
 ### Running a local Ganache blockchain
 
 - In your terminal, run `ganache-cli -p 7545` to start an Ethereum blockchain at port `7545`.
 - Run `truffle compile` to create the build artifacts directory, which contain the bytecodes version of the smart contracts, ABIs, etc.
-- Run `truffle test` to execute the unit tests for the smart contracts.
+- Run `truffle test` to execute the unit tests for the `EllipticalArtNFT` smart contract.
 - Run `truffle migrate --reset --network rinkeby` to deploy the smart contracts to the Rinkeby network.
+
 ### Directory Structure
 
 - `/.github/workflows`: contains the configuration files for building and deploying the app automatically
@@ -107,7 +97,7 @@ Merging code into `main` automatically kicks off the deployment to Heroku.
   - `/migrations`: contains the Truffle migration files that describe how to deploy the project's smart contracts
   - `/test`: contains the smart contract test code
   - `/truffle-config.js`: configuration and settings file for smart contract development and deployment
-  - `/scripts`: contains scripts for calling the smart contract
+  - `/scripts`: contains scripts for interacting with the smart contract
 - `/src`
   - `/api`
     - `client.js`: a client wrapper around the Fetch API that supports `GET`, `POST`, `PUT`, and `DELETE` requests
@@ -151,6 +141,13 @@ The following principles were applied in the design of the folder structure:
 - The service abstracts away the API logic for each feature, thereby avoiding the need to hard-code the API calls into the components directly.
 
 - Core UI components such as Button, Form, List, etc. are kept in a separate directory (i.e., `src/common/core`). As the UI library continues to grow, the core UI library could be packaged for use in another project or published as part of Storybook. Some developers on the team can even focus on this directory only.
+
+## Next Steps
+
+- Use Chainlink keepers and external adapters to make the elliptical art NFTs truly dynamic that evolve with provably random attributes that change over
+- Set up Chainlink nodes on a local blockchain for development
+- Build out a form that allows the user to submit the elliptical art image to be stored on Filecoin
+- Build out a basic backend (possibly using the `json-server` library already configured in the project) that can automatically handle the tasks in `./contracts/scripts` via a RESTful interface, such as creating the metadata for each NFT, setting the tokenURI for each NFT, and deploying the metadata automatically to nft.storage
 
 ## Other Available Scripts
 
