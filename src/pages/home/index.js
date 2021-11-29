@@ -54,9 +54,9 @@ export default function HomePage() {
         ) : (
           <>
             <p>
-              Check on the progress of the transaction on Ethernet:
+              Check on the progress of the{" "}
               <a href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}>
-                {transactionHash}
+                transaction on Ethernet.
               </a>
             </p>
             <p>

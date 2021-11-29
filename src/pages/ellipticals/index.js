@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ErrorBoundary, useErrorHandler } from "react-error-boundary";
 import { useSelector, useDispatch } from "react-redux";
 import { useWeb3React } from "@web3-react/core";
@@ -39,6 +40,15 @@ export default function EllipticalsPage() {
     })();
   }, [active, contract, dispatch, handleError]);
 
+  const message =
+    ellipticalsCount === 0 ? (
+      <h2>
+        No elliptical found. <Link to="/home">Mint now.</Link>
+      </h2>
+    ) : (
+      <h2>Browse all {ellipticalsCount} minted Elliptical art NFT...</h2>
+    );
+
   const content =
     fetchEllipticalsCountStatus === STATUS.loading ? (
       <Loader />
@@ -46,9 +56,7 @@ export default function EllipticalsPage() {
       <ErrorBoundary
         children={
           <>
-            <h2 className={styles.title}>
-              Browse all {ellipticalsCount} minted Elliptical art NFT...
-            </h2>
+            {message}
             <EllipticalsList />
           </>
         }

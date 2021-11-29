@@ -29,7 +29,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 [YouTube: Consensys Final Project]()
 
-## Public Ethereum Address
+## EllipticalArtNFT Contract Address
+
+0xD196988e7f66faa9838598385C3668e622179b7c
 
 ## Problem
 
