@@ -1,6 +1,7 @@
 import { useErrorHandler } from "react-error-boundary";
 import { useHistory } from "react-router-dom";
 import { formatEther } from "@ethersproject/units";
+import { useDispatch } from "react-redux";
 
 import { STATUS } from "../../common/constants";
 import { Button, Loader } from "../../common/core";
@@ -9,6 +10,8 @@ import { shortenAddress } from "../../common/utils";
 
 import { injected } from "./auth.connectors";
 import styles from "./auth.module.css";
+
+import { ellipticalsReset } from "../ellipticals/ellipticals.slice";
 
 export default function Auth() {
   const {
@@ -23,6 +26,7 @@ export default function Auth() {
 
   const handleError = useErrorHandler();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   async function handleConnectButtonClick() {
     if (!window.ethereum) {
@@ -36,6 +40,7 @@ export default function Auth() {
 
     try {
       await activate(injected);
+      history.push("/");
     } catch (error) {
       handleError(
         new Error(
@@ -51,6 +56,7 @@ export default function Auth() {
     try {
       await deactivate();
       history.push("/");
+      dispatch(ellipticalsReset());
     } catch (error) {
       handleError(new Error("Sorry, we're having trouble logging out."));
     }

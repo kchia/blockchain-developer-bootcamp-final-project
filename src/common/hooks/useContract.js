@@ -4,8 +4,8 @@ import { AddressZero } from "@ethersproject/constants";
 import { useWeb3React } from "@web3-react/core";
 
 export default function useContract(contractAddress, ABI) {
-  const [signerOrProvider, setSignerOrProvider] = useState(undefined);
   const { library, account } = useWeb3React();
+  const [signerOrProvider, setSignerOrProvider] = useState(library);
   if (contractAddress === AddressZero) {
     throw Error(`Invalid 'contractAddress' parameter '${contractAddress}'.`);
   }
@@ -16,11 +16,9 @@ export default function useContract(contractAddress, ABI) {
         account ? library.getSigner(account).connectUnchecked() : library
       );
     }
-  }, [library]);
+  }, [library, account]);
 
   return useMemo(() => {
-    return library
-      ? new Contract(contractAddress, ABI, signerOrProvider)
-      : null;
+    return new Contract(contractAddress, ABI, signerOrProvider);
   }, [contractAddress, ABI, signerOrProvider]);
 }

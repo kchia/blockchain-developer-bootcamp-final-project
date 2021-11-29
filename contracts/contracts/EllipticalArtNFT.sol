@@ -154,6 +154,7 @@ contract EllipticalArtNFT is
         requestToEllipticalName[requestId] = _name;
         requestToEllipticalDescription[requestId] = _description;
         requestToSender[requestId] = _msgSender();
+        _triggerCooldown(_msgSender());
         emit RequestedElliptical(requestId);
         return requestId;
     }
@@ -209,7 +210,6 @@ contract EllipticalArtNFT is
         ellipticals.push(elliptical);
         ellipticalToOwner[id] = _msgSender();
         addressEllipticalCount[_sender]++;
-        _triggerCooldown(_sender);
         _safeMint(_sender, id);
     }
 

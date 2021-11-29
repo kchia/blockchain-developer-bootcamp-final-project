@@ -1,24 +1,26 @@
 import { useState } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Loader, Modal as SuccessModal } from "../../common/core";
+import { Modal as SuccessModal } from "../../common/core";
 import { STATUS } from "../../common/constants";
 import { Auth, MintEllipticalArtForm, EllipticalView } from "../../features";
 import {
-  selectElliptical,
+  selectError,
   selectMintRandomEllipticalStatus,
+  selectTransactionHash,
 } from "../../features/ellipticals/ellipticals.slice";
 
 import styles from "./home.module.css";
 
 export default function HomePage() {
   const [showModal, setShowModal] = useState(false);
+  const status = useSelector(selectMintRandomEllipticalStatus);
+  const error = useSelector(selectError);
+  const transactionHash = useSelector(selectTransactionHash);
   const { active } = useWeb3React();
   const history = useHistory();
-  const status = useSelector(selectMintRandomEllipticalStatus);
-  const elliptical = useSelector(selectElliptical);
 
   function handleSuccessModalClose() {
     setShowModal(false);
@@ -32,24 +34,40 @@ export default function HomePage() {
     <>
       <div className={styles.secondaryContainer}>
         <MintEllipticalArtForm setShowModal={setShowModal} />
-        <EllipticalView drawRecursively />
+        {status === STATUS.loading ? null : <EllipticalView drawRecursively />}
       </div>
       <SuccessModal
         handlePrimaryButtonClick={handleSuccessModalDoneButtonClick}
         handleSecondaryButtonClick={handleSuccessModalClose}
-        heading="Here's your unique, one-of-a-kind elliptical..."
-        show={showModal}
-        body={
-          status === STATUS.loading ? (
-            <Loader />
-          ) : (
-            <EllipticalView elliptical={elliptical} />
-          )
+        heading={
+          error
+            ? "Sorry, there's a problem..."
+            : "Here's your transaction hash..."
         }
+        show={showModal}
         primaryText="done"
         secondaryText="close"
         handleClose={handleSuccessModalClose}
-      />
+      >
+        {error ? (
+          <p>{error}</p>
+        ) : (
+          <>
+            <p>
+              Check on the progress of the transaction on Ethernet:
+              <a href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}>
+                {transactionHash}
+              </a>
+            </p>
+            <p>
+              After the transaction is successful, it may take a few minutes for
+              your NFT to appear at the{" "}
+              <Link to="/ellipticals">ellipticals page</Link>, so please be
+              patient.
+            </p>
+          </>
+        )}
+      </SuccessModal>
     </>
   ) : (
     <>

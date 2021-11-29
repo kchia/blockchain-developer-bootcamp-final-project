@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useErrorHandler } from "react-error-boundary";
 import { useSelector, useDispatch } from "react-redux";
+import { useWeb3React } from "@web3-react/core";
 
 import ABI from "../../../abis/EllipticalArtNFTContract.abi.json";
 import { STATUS, NFT_CONTRACT_ADDRESS } from "../../../common/constants";
@@ -22,18 +23,17 @@ export default function EllipticalsList() {
   const dispatch = useDispatch();
   const handleError = useErrorHandler();
   const contract = useContract(NFT_CONTRACT_ADDRESS, ABI);
+  const { active } = useWeb3React();
 
   useEffect(() => {
     (async () => {
       try {
-        if (!!contract) {
-          await dispatch(fetchEllipticals(contract)).unwrap();
-        }
+        await dispatch(fetchEllipticals({ contract, active })).unwrap();
       } catch (error) {
         handleError(error);
       }
     })();
-  }, []);
+  }, [active, contract, dispatch, handleError]);
 
   const content =
     fetchEllipticalsStatus === STATUS.loading ? (

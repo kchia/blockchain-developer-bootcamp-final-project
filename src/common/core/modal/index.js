@@ -7,7 +7,7 @@ export default function CustomModal({
   handleSecondaryButtonClick,
   handlePrimaryButtonClick,
   heading,
-  body,
+  children,
   secondaryText,
   onHide,
   primaryText,
@@ -18,7 +18,7 @@ export default function CustomModal({
       <Modal.Header closeButton>
         <Modal.Title className={styles.modalTitle}>{heading}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className={styles.modalBody}>{body}</Modal.Body>
+      <Modal.Body className={styles.modalBody}>{children}</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleSecondaryButtonClick}>
           {secondaryText}

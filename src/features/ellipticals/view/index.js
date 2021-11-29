@@ -28,7 +28,7 @@ export default function EllipticalView({
         );
       }
 
-      p5.save(`${name}.png`);
+      // p5.save(`${name}.png`);
     }
   }
 

@@ -3,19 +3,21 @@ import { STATUS } from "../../common/constants";
 
 const fetchEllipticals = createAsyncThunk(
   "ellipticals/ellipticalsFetched",
-  async (contract, { getState }) => {
+  async ({ contract, active }, { getState }) => {
     const { fetchEllipticalsStatus } = getState().ellipticals;
-    if (fetchEllipticalsStatus !== STATUS.loading) return;
+    if (!contract || !active || fetchEllipticalsStatus !== STATUS.loading)
+      return [];
 
     const ellipticalsCount = await contract.getEllipticalsCount();
 
     const ellipticals = [];
     for (let index = 0; index < ellipticalsCount; index++) {
-      const { name, v1, v2, v3, alpha, x, y, w, h } =
+      const { name, description, v1, v2, v3, alpha, x, y, w, h } =
         await contract.ellipticals(index);
 
       ellipticals.push({
         name: name.toString(),
+        description: description.toString(),
         v1: parseInt(v1),
         v2: parseInt(v2),
         v3: parseInt(v3),
@@ -32,9 +34,10 @@ const fetchEllipticals = createAsyncThunk(
 
 const fetchEllipticalsCount = createAsyncThunk(
   "ellipticals/ellipticalsCountFetched",
-  async (contract, { getState }) => {
+  async ({ contract, active }, { getState }) => {
     const { fetchEllipticalsCountStatus } = getState().ellipticals;
-    if (fetchEllipticalsCountStatus !== STATUS.loading) return;
+    if (!contract || !active || fetchEllipticalsCountStatus !== STATUS.loading)
+      return;
     return parseInt(await contract.getEllipticalsCount());
   }
 );
@@ -44,11 +47,12 @@ const mintRandomElliptical = createAsyncThunk(
   async ({ contract, signer, name, description }, { getState }) => {
     const { mintRandomEllipticalStatus } = getState().ellipticals;
     if (mintRandomEllipticalStatus !== STATUS.loading) return;
-    const { id } = await contract
+    const transaction = await contract
       .connect(signer)
       .requestNewRandomElliptical(name, description);
 
-    return contract.ellipticals(id);
+    await transaction.wait();
+    return transaction.hash;
   }
 );
 
@@ -56,10 +60,11 @@ const initialState = {
   elliptical: {},
   ellipticals: [],
   ellipticalsCount: 0,
-  error: null,
+  error: undefined,
   fetchEllipticalsCountStatus: STATUS.idle,
   fetchEllipticalsStatus: STATUS.idle,
   mintRandomEllipticalStatus: STATUS.idle,
+  transactionHash: undefined,
 };
 
 const ellipticalsSlice = createSlice({
@@ -67,7 +72,8 @@ const ellipticalsSlice = createSlice({
   initialState,
   reducers: {
     ellipticalsReset(state) {
-      state = initialState;
+      state.ellipticals = [];
+      state.ellipticalsCount = 0;
     },
   },
   extraReducers(builder) {
@@ -81,6 +87,7 @@ const ellipticalsSlice = createSlice({
         if (state.fetchEllipticalsStatus === STATUS.loading) {
           state.fetchEllipticalsStatus = STATUS.idle;
           state.ellipticals = payload;
+          state.error = null;
         }
       })
       .addCase(fetchEllipticals.rejected, (state, { error: { message } }) => {
@@ -98,6 +105,7 @@ const ellipticalsSlice = createSlice({
         if (state.fetchEllipticalsCountStatus === STATUS.loading) {
           state.fetchEllipticalsCountStatus = STATUS.idle;
           state.ellipticalsCount = payload;
+          state.error = null;
         }
       })
       .addCase(
@@ -117,8 +125,8 @@ const ellipticalsSlice = createSlice({
       .addCase(mintRandomElliptical.fulfilled, (state, { payload }) => {
         if (state.mintRandomEllipticalStatus === STATUS.loading) {
           state.mintRandomEllipticalStatus = STATUS.idle;
-          state.elliptical = payload;
-          state.ellipticals = state.ellipticals.concat(payload);
+          state.transactionHash = payload;
+          state.error = null;
         }
       })
       .addCase(
@@ -137,12 +145,15 @@ const selectAllEllipticals = ({ ellipticals: { ellipticals } }) => ellipticals;
 const selectElliptical = ({ ellipticals: { elliptical } }) => elliptical;
 const selectEllipticalsCount = ({ ellipticals: { ellipticalsCount } }) =>
   ellipticalsCount;
+const selectError = ({ ellipticals: { error } }) => error;
 const selectFetchEllipticalsStatus = ({
   ellipticals: { fetchEllipticalsStatus },
 }) => fetchEllipticalsStatus;
 const selectFetchEllipticalsCountStatus = ({
   ellipticals: { fetchEllipticalsCountStatus },
 }) => fetchEllipticalsCountStatus;
+const selectTransactionHash = ({ ellipticals: { transactionHash } }) =>
+  transactionHash;
 const selectMintRandomEllipticalStatus = ({
   ellipticals: { mintRandomEllipticalStatus },
 }) => mintRandomEllipticalStatus;
@@ -159,6 +170,8 @@ export {
   selectAllEllipticals,
   selectElliptical,
   selectEllipticalsCount,
+  selectError,
   selectFetchEllipticalsStatus,
   selectFetchEllipticalsCountStatus,
+  selectTransactionHash,
 };

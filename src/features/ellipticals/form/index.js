@@ -12,6 +12,8 @@ import {
   selectMintRandomEllipticalStatus,
 } from "../ellipticals.slice";
 
+import styles from "./form.module.css";
+
 export default function MintEllipticalArtForm({
   setShowModal,
   initialFormData = {
@@ -60,7 +62,10 @@ export default function MintEllipticalArtForm({
 
   const content =
     status === STATUS.loading ? (
-      <Loader />
+      <section className={styles.container}>
+        <h2>Minting in progress...please be patient</h2>
+        <Loader />
+      </section>
     ) : (
       <>
         <form onSubmit={handleSubmit}>
@@ -91,7 +96,7 @@ export default function MintEllipticalArtForm({
               </label>
             </li>
           </ul>
-          <Button text="mint an nft" handleClick={handleSubmit} />
+          <Button text="mint an nft" />
         </form>
       </>
     );
