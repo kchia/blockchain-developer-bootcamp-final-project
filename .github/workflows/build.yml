@@ -30,4 +30,4 @@ jobs:
           CI=false yarn build
       - name: yarn test
         run: |
-          yarn test
+          yarn test --passWithNoTests

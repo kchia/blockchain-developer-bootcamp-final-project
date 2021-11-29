@@ -31,7 +31,7 @@ jobs:
           CI=false yarn build
       - name: yarn test
         run: |
-          yarn test
+          yarn test --passWithNoTests
       - name: Add remote origin
         run: |
           git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ env.HEROKU_APP_NAME }}.git
