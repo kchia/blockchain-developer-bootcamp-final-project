@@ -46,6 +46,10 @@ The `EllipticalArtNFT` contract is currently deployed to the Rinkeby testnet, at
 
 ![EllipticalArtNFT Ellipticals](./images/EllipticalArtNFT-ellipticals.png)
 
+5. Keep in mind that each wallet can only mint 1 elliptical art NFT within a 24 hour period. If you try to mint another NFT with the same wallet address right now, you should see the following error:
+
+![EllipticalArtNFT Fail](./images/EllipticalArtNFT-fail.png)
+
 ## How to Store Elliptical Art Images and Metadata on `nft.storage` (Work in Progress)
 
 Currently, the app does **not** store a copy of the generated art, but re-draws each elliptical art in the browser using randomly-generated attributes stored on-chain.
