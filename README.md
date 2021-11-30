@@ -20,7 +20,7 @@ The frontend is deployed to Heroku, at [Heroku: Consensys Final Project](https:/
 
 ## Screencast URL
 
-[YouTube: Consensys Final Project]()
+[YouTube: Consensys Final Project](https://youtu.be/kcBCc3mdbPM)
 
 ## EllipticalArtNFT Contract Address
 
