@@ -121,39 +121,37 @@ You will need to replace the values above with your own custom values. `NFTSTORA
 
 - `/.github/workflows`: contains the configuration files for building and deploying the app automatically
 - `/contracts`
-  - `/contracts`: contains smart contract code written in Solidity
-    - `Migrations.sol`: A contract that keeps track of changes made to the code onchain to avoid duplicative deployment 
+  - `/contracts`: contains smart contracts for the project written in Solidity
   - `/migrations`: contains the Truffle migration files that describe how to deploy the project's smart contracts
   - `/test`: contains the smart contract test code
   - `/truffle-config.js`: configuration and settings file for smart contract development and deployment
   - `/scripts`: contains scripts for interacting with the smart contract
 - `/src`
+  - `/abis`: stores any contract ABIs that the frontend uses to interact with the smart contract
   - `/api`
     - `client.js`: a client wrapper around the Fetch API that supports `GET`, `POST`, `PUT`, and `DELETE` requests
   - `/app`: contains the top-level component for the application
-    - `/layout`
-      - `/footer`: contains the `Footer` component and css file
-      - `/header`: contains the `Header` component and css file
-      - `/navigation`: contains the `Navigation` component and css file
+    - `/layout`: contains the layout components, including the footer, header, navigation etc.
       - `index.js`: defines and exports the `Layout` component, which contains the routing for the application
-      - `layout.module.css`
     - `index.js`: exports the `App` component, which can render different layouts
     - `store.js`: configures and exports the Redux store
   - `/common`: contains code used across components annd throughout the application
     - `/constants`: contains shared constants (e.g., `STATUS.idle`)
     - `/core`: contains generic components (e.g., `Button`, `Modal`, `Loader`, etc.)
     - `/utils`: contains utility functions (e.g., `formatNumber()`)
+    - `/hooks`: contains reusable hook logic, such as `useEth()`, `useContract()`, etc.
   - `/features`: contains the code for the main features of the application
-    - `/no-match`
-      - `index.js`
+    - `/auth`: components for authenticating the user and connecting to MetaMask
+    - `/ellipticals`: components for minting and displaying elliptical NFTs
     - `index.js`: exports the components from the `/features` folder
+  - `/pages`: components that represent different pages of the applicadtion
   - `/styles`
     - `global.css`: contains global css styles used throughout the application
   - `index.js`: entry point to the React Application
   - `setupTests.js`: import any additional libraries used to extend test functionality (e.g, `jest-dom`)
 - `.gitignore`: specifies the files to ignore when committing the project to Github
 - `avoiding_common_attacks.md`: describes common attack vectors and their SWC numbers that the smart contract protects against
-- `db.json`: JSON database for your fake REST API
+- `db.json`: JSON database for your fake REST API (not used in the project currently)
 - `deployed_address.txt`: contains information on the testnet address and the network the smart contract was deployed to
 - `design_pattern_decisions.md`: describes the design pattern decisions used to build the smart contract
 - `package.json`: manifest file for the project
@@ -173,7 +171,6 @@ The following principles were applied in the design of the folder structure:
 
 ## Next Steps
 
-- 
 - Use Chainlink keepers and external adapters to make the elliptical art NFTs truly dynamic that evolve with provably random attributes that change over
 - Set up Chainlink nodes on a local blockchain for development. The majority of the tests are not working because testing Chainlink-powered smart contracts on rinkeby does not seem to be well-supported right now, and there's limited documentation on unit testing Chainlink-powered smart contracts with truffle. Hardhat seems to offer better support, so I might look into this option in the future. 
 - Build out a form that allows the user to submit the elliptical art image to be stored on Filecoin
