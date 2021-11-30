@@ -30,7 +30,7 @@ The `EllipticalArtNFT` contract is currently deployed to the Rinkeby testnet, at
 
 `0x85ea1f1BD413b9fd797B9128e4AA6f81A5300701`
 
-## How to Use EllipticalArtNFT to Mint an NFT
+## How to Use EllipticalArtNFT to Mint an NFT 
 
 1. On the `/home` page, press the `CONNECT TO WEB3` button to connect to the app via MetaMask. Make sure to use the Rinkeby network. After connecting to MetaMask successfully, the connected account address and balance will be displayed in the page header. A form titled `Create unique, one-of-a-kind elliptical art` will also appear on the page, as follows:
 
@@ -46,7 +46,7 @@ The `EllipticalArtNFT` contract is currently deployed to the Rinkeby testnet, at
 
 ![EllipticalArtNFT Ellipticals](./images/EllipticalArtNFT-ellipticals.png)
 
-## How to Store Elliptical Art Images and Metadata on `nft.storage`
+## How to Store Elliptical Art Images and Metadata on `nft.storage` (Work in Progress)
 
 Currently, the app does **not** store a copy of the generated art, but re-draws each elliptical art in the browser using randomly-generated attributes stored on-chain.
 
@@ -56,9 +56,11 @@ For more technical users, you could store the NFT metadata on `nft.storage`, whi
 - `contracts/scripts/filecoin-deploy.js`: iterates through the `/metadata` folder, storing the contents of each `.json` file on `nft.storage`
 - `contracts/scripts/set-token-uri.js`: sets the token URI of each elliptical art to an IPFS address that resolves to the elliptical art's metadata, including a link to the image
 
-As a next step for this project, additional UI elements and a simple RESTful API could be built out (possibly using the `json-server` library already configured in the project) to automatically handle these tasks.
-
 `contracts/scripts/generate-elliptical.js` creates new ellipticals, whereas `contracts/scripts/get-elliptical.js` retrieves an elliptical by its token id. These scripts are helpful for testing the smart contract without a frontend.
+
+**NOTE** These scripts are still a work-in-progress, and you might run into issues when you try to run these scripts without tweaking them. 
+
+As a next step for this project, additional UI elements and a simple RESTful API could be built out (possibly using the `json-server` library already configured in the project) to automatically handle these tasks.
 
 ## `EllipticalArtNFT` User Stories
 
@@ -171,6 +173,7 @@ The following principles were applied in the design of the folder structure:
 
 ## Next Steps
 
+- 
 - Use Chainlink keepers and external adapters to make the elliptical art NFTs truly dynamic that evolve with provably random attributes that change over
 - Set up Chainlink nodes on a local blockchain for development. The majority of the tests are not working because testing Chainlink-powered smart contracts on rinkeby does not seem to be well-supported right now, and there's limited documentation on unit testing Chainlink-powered smart contracts with truffle. Hardhat seems to offer better support, so I might look into this option in the future. 
 - Build out a form that allows the user to submit the elliptical art image to be stored on Filecoin
