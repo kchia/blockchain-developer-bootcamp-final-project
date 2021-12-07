@@ -16,7 +16,7 @@ The frontend, using the [p5.js](https://p5js.org/) library, then uses these rand
 
 ## Deployed Site URL
 
-The frontend is deployed to Heroku, at [Heroku: Consensys Final Project](https://www.pacific-sea-29544.herokuapp.com).
+The frontend is deployed to Heroku, at [Heroku: Consensys Final Project](https://pacific-sea-29544.herokuapp.com).
 
 ## Screencast URL
 
