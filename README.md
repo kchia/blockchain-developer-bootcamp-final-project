@@ -117,9 +117,44 @@ You will need to replace the values above with your own custom values. `NFTSTORA
 ### Running a local Ganache blockchain
 
 - In your terminal, run `ganache-cli -p 7545` to start an Ethereum blockchain at port `7545`.
+
+**NOTE: You can only run the following commands inside the `/contracts` folder:
 - Run `truffle compile` to create the build artifacts directory, which contain the bytecodes version of the smart contracts, ABIs, etc.
 - Run `truffle test` to execute the unit tests for the `EllipticalArtNFT` smart contract.
 - Run `truffle migrate --reset --network rinkeby` to deploy the smart contracts to the Rinkeby network.
+
+### Running tests
+
+Unfortunately, there is a Solidity version conflict between the `EllipticalArtNFT` contract (which is written in Solidity 0.8.9) and the `@chainlink/contracts` (the project relies on `v0.6` of the `@chainlink/contracts`, which is written in Solidity ^0.6.0), so the tests won't run properly until you fix the pragma issues in the chainlink contracts.
+
+ After installing the node dependencies with `yarn`, you'd have to go into the `node_modules` folder and update the pragma versions of the following contracts to `0.8.9`:
+
+- `@chainlink/contracts/src/v0.6/tests/VRFCoordinatorMock`
+  - Also remove the "public" keyword from the constructor method
+
+- `@chainlink/contracts/src/v0.6/tests/MockV3Aggregator`
+  - Also remove the "public" keyword from the constructor method
+  
+- `@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface`
+
+- `@chainlink/contracts/src/v0.6/interfaces/AggregatorV2V3Interface`
+
+- `@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface`
+
+- `@chainlink/contracts/src/v0.6/VRFConsumerBase`
+  - Also remove the "public" keyword from the constructor method
+
+- `@chainlink/contracts/src/v0.6/vendor/SafeMathChainlink`
+
+- `@chainlink/contracts/src/v0.6/VRFRequestIDBase`
+
+Within the `/contracts` folder, run `truffle test` to execute the tests.
+
+If all goes well, you should see 5 passing tests, as follows:
+
+![passing tests](./tests.png)
+
+Several tests are disabled for now, since the Chainlink mocks don't seem to be working properly. Testing Chainlink-powered smart contracts on rinkeby does not seem to be well-supported right now, and there's limited documentation on unit testing Chainlink-powered smart contracts with truffle. I would look into using hardhat instead in the future.
 
 ### Directory Structure
 
@@ -181,11 +216,6 @@ The following principles were applied in the design of the folder structure:
 - Build out a basic backend (possibly using the `json-server` library already configured in the project) that can automatically handle the tasks in `./contracts/scripts` via a RESTful interface, such as creating the metadata for each NFT, setting the tokenURI for each NFT, and deploying the metadata automatically to nft.storage
 
 ## Other Available Scripts
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
