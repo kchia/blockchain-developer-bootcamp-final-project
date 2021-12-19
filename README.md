@@ -125,6 +125,8 @@ You will need to replace the values above with your own custom values. `NFTSTORA
 
 ### Running tests
 
+You can find the smart contract tests [here](/contracts/test/EllipticalArtNFT.js)
+
 Unfortunately, there is a Solidity version conflict between the `EllipticalArtNFT` contract (which is written in Solidity 0.8.9) and the `@chainlink/contracts` (the project relies on `v0.6` of the `@chainlink/contracts`, which is written in Solidity ^0.6.0), so the tests won't run properly until you fix the pragma issues in the chainlink contracts.
 
  After installing the node dependencies with `yarn`, you'd have to go into the `node_modules` folder and update the pragma versions of the following contracts to `0.8.9`:
